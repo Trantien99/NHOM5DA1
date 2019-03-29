@@ -30,6 +30,7 @@ public class frmNXB extends javax.swing.JFrame {
 
     public frmNXB() {
         initComponents();
+        rdbMANXB.setSelected(true);
         this.setSize(720, 500);
         lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/brnxb-1.jpg")));
         setLocationRelativeTo(null);
@@ -109,9 +110,9 @@ public class frmNXB extends javax.swing.JFrame {
         btnNXBCAPNHAT = new javax.swing.JButton();
         btnNXBXOA = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
-        ckbMANXB = new javax.swing.JCheckBox();
-        ckbTENNXB = new javax.swing.JCheckBox();
         btnNXBSEACH = new javax.swing.JButton();
+        rdbMANXB = new javax.swing.JRadioButton();
+        rdbTENNXB = new javax.swing.JRadioButton();
         lblBR = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -128,6 +129,7 @@ public class frmNXB extends javax.swing.JFrame {
         mitPHIEUNHAP = new javax.swing.JMenuItem();
         mitPHIEUMUON = new javax.swing.JMenuItem();
         mitPHIEUMUONCT = new javax.swing.JMenuItem();
+        mitPHIEUPHAT = new javax.swing.JMenuItem();
         mitTHONGKE = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mitHDSD = new javax.swing.JMenuItem();
@@ -307,16 +309,6 @@ public class frmNXB extends javax.swing.JFrame {
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jPanel8.setOpaque(false);
 
-        buttonGroup9.add(ckbMANXB);
-        ckbMANXB.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbMANXB.setForeground(new java.awt.Color(0, 0, 255));
-        ckbMANXB.setText("Mã NXB");
-
-        buttonGroup9.add(ckbTENNXB);
-        ckbTENNXB.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbTENNXB.setForeground(new java.awt.Color(0, 0, 255));
-        ckbTENNXB.setText("Tên NXB");
-
         btnNXBSEACH.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnNXBSEACH.setForeground(new java.awt.Color(51, 51, 51));
         btnNXBSEACH.setText("SEACH");
@@ -326,28 +318,38 @@ public class frmNXB extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(rdbMANXB);
+        rdbMANXB.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMANXB.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMANXB.setText("Mã NXB");
+
+        buttonGroup1.add(rdbTENNXB);
+        rdbTENNXB.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbTENNXB.setForeground(new java.awt.Color(0, 0, 255));
+        rdbTENNXB.setText("Tên NXB");
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ckbTENNXB)
-                    .addComponent(ckbMANXB))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addComponent(btnNXBSEACH)
                 .addGap(29, 29, 29))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdbTENNXB)
+                    .addComponent(rdbMANXB))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(ckbMANXB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(ckbTENNXB)
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(rdbMANXB)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rdbTENNXB)
                 .addGap(18, 18, 18)
                 .addComponent(btnNXBSEACH)
                 .addContainerGap())
@@ -576,6 +578,15 @@ public class frmNXB extends javax.swing.JFrame {
         });
         jMenu3.add(mitPHIEUMUONCT);
 
+        mitPHIEUPHAT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconpp.png"))); // NOI18N
+        mitPHIEUPHAT.setText("Phiếu phạt");
+        mitPHIEUPHAT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitPHIEUPHATActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mitPHIEUPHAT);
+
         mitTHONGKE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconbdtk.jpg"))); // NOI18N
         mitTHONGKE.setText("Thống kê số liệu");
         mitTHONGKE.addActionListener(new java.awt.event.ActionListener() {
@@ -760,6 +771,17 @@ public class frmNXB extends javax.swing.JFrame {
         } else if (kiemtraloiNXB() == false) {
             return;
         } else {
+            boolean ckmanxb = false;
+            for (NhaXB nxb : list) {
+                if (nxb.getManxb().equals(txtMANXB.getText())) {
+                    ckmanxb = true;
+                    break;
+                }
+            }
+            if (!ckmanxb) {
+                JOptionPane.showMessageDialog(this, "Mã NXB không tồn tại");
+                return;
+            }
             List<NhaXB> n = new ArrayList<>();
             try {
                 String sql = "where tennxb like N'" + txtTENNXB.getText().trim() + "' and manxb like'" + txtMANXB.getText() + "'";
@@ -841,6 +863,13 @@ public class frmNXB extends javax.swing.JFrame {
         txtNXBEMAIL.setText("");
     }//GEN-LAST:event_btnNXBNHAPMOIActionPerformed
 
+    private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
+        frmPHIEUPHAT frmPP;
+        frmPP = new frmPHIEUPHAT();
+        frmPP.show();
+        dispose();
+    }//GEN-LAST:event_mitPHIEUPHATActionPerformed
+
     private void fillToTableNXB() {
         DefaultTableModel model = (DefaultTableModel) tblNXB.getModel();
         model.setRowCount(0);
@@ -909,8 +938,6 @@ public class frmNXB extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup7;
     private javax.swing.ButtonGroup buttonGroup8;
     private javax.swing.ButtonGroup buttonGroup9;
-    private javax.swing.JCheckBox ckbMANXB;
-    private javax.swing.JCheckBox ckbTENNXB;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
@@ -935,11 +962,14 @@ public class frmNXB extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitPHIEUMUON;
     private javax.swing.JMenuItem mitPHIEUMUONCT;
     private javax.swing.JMenuItem mitPHIEUNHAP;
+    private javax.swing.JMenuItem mitPHIEUPHAT;
     private javax.swing.JMenuItem mitSACH;
     private javax.swing.JMenuItem mitTACGIA;
     private javax.swing.JMenuItem mitTHOAT;
     private javax.swing.JMenuItem mitTHONGKE;
     private javax.swing.JMenuItem mitTTPB;
+    private javax.swing.JRadioButton rdbMANXB;
+    private javax.swing.JRadioButton rdbTENNXB;
     private javax.swing.JTable tblNXB;
     private javax.swing.JTextField txtMANXB;
     private javax.swing.JTextField txtNXBDIACHI;
@@ -999,9 +1029,9 @@ public class frmNXB extends javax.swing.JFrame {
 
     private void timkiemNXB() {
         String sql = "";
-        if (ckbMANXB.isSelected()) {
+        if (rdbMANXB.isSelected()) {
             sql = " where manxb like'" + txtMANXB.getText().trim() + "'";
-        } else if (ckbTENNXB.isSelected()) {
+        } else if (rdbTENNXB.isSelected()) {
             sql = " where tennxb like N'" + txtTENNXB.getText().trim() + "'";
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn thuộc tính tìm kiếm");

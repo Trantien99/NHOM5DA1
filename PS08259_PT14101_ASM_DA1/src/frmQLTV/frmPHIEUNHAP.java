@@ -9,9 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Phieunhapsach;
+import model.PhieunhapsachDao;
 
 /**
  *
@@ -23,12 +27,27 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
      * Creates new form frmMENU
      */
     List<Phieunhapsach> list = new ArrayList<>();
+    private int currentindex;
 
     public frmPHIEUNHAP() {
         initComponents();
+        rdbMPN.setSelected(true);
         this.setSize(800, 550);
         lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/brpn-1.jpg")));
         setLocationRelativeTo(null);
+        laydulieuPhieunhap("");
+    }
+
+    private void laydulieuPhieunhap(String sql) {
+        list.clear();
+        tblPHIEUNHAP.removeAll();
+        try {
+            list = PhieunhapsachDao.laydulieuPhieunhap(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmPHIEUNHAP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        fillToTableSach();
+        laydulieuPN();
     }
 
     /**
@@ -41,15 +60,6 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
-        buttonGroup3 = new javax.swing.ButtonGroup();
-        buttonGroup4 = new javax.swing.ButtonGroup();
-        buttonGroup5 = new javax.swing.ButtonGroup();
-        buttonGroup6 = new javax.swing.ButtonGroup();
-        buttonGroup7 = new javax.swing.ButtonGroup();
-        buttonGroup8 = new javax.swing.ButtonGroup();
-        buttonGroup9 = new javax.swing.ButtonGroup();
-        buttonGroup10 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btnDANGXUAT = new javax.swing.JButton();
@@ -78,10 +88,10 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
         btnPNCAPNHAT = new javax.swing.JButton();
         btnPNXOA = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        ckbMAPN = new javax.swing.JCheckBox();
-        ckbPNMASACH = new javax.swing.JCheckBox();
-        ckbPNNGAYNHAP = new javax.swing.JCheckBox();
         btnPNSEACH = new javax.swing.JButton();
+        rdbMPN = new javax.swing.JRadioButton();
+        rdbMS = new javax.swing.JRadioButton();
+        rdbNN = new javax.swing.JRadioButton();
         lblBR = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -98,6 +108,7 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
         mitPHIEUNHAP = new javax.swing.JMenuItem();
         mitPHIEUMUON = new javax.swing.JMenuItem();
         mitPHIEUMUONCT = new javax.swing.JMenuItem();
+        mitPHIEUPHAT = new javax.swing.JMenuItem();
         mitTHONGKE = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mitHDSD = new javax.swing.JMenuItem();
@@ -216,6 +227,11 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
                 "Mã phiếu nhập", "Mã sách", "Số lượng", "Ngày nhập", "Giá", "Mã nhân viên"
             }
         ));
+        tblPHIEUNHAP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPHIEUNHAPMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblPHIEUNHAP);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -241,6 +257,12 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 0, 255));
         jLabel14.setText("Giá");
+
+        txtPNSOLUONG.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        txtPNNGAYNHAP.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        txtPNGIA.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         btnPNNHAPMOI.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnPNNHAPMOI.setForeground(new java.awt.Color(51, 51, 51));
@@ -279,23 +301,8 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
         });
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel4.setOpaque(false);
-
-        buttonGroup2.add(ckbMAPN);
-        ckbMAPN.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbMAPN.setForeground(new java.awt.Color(0, 0, 255));
-        ckbMAPN.setText("Mã phiếu nhập");
-
-        buttonGroup2.add(ckbPNMASACH);
-        ckbPNMASACH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbPNMASACH.setForeground(new java.awt.Color(0, 0, 255));
-        ckbPNMASACH.setText("Mã sách");
-
-        buttonGroup2.add(ckbPNNGAYNHAP);
-        ckbPNNGAYNHAP.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbPNNGAYNHAP.setForeground(new java.awt.Color(0, 0, 255));
-        ckbPNNGAYNHAP.setText("Ngày nhập");
 
         btnPNSEACH.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnPNSEACH.setForeground(new java.awt.Color(51, 51, 51));
@@ -306,6 +313,21 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(rdbMPN);
+        rdbMPN.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMPN.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMPN.setText("Mã phiếu nhập");
+
+        buttonGroup1.add(rdbMS);
+        rdbMS.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMS.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMS.setText("Mã sách");
+
+        buttonGroup1.add(rdbNN);
+        rdbNN.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbNN.setForeground(new java.awt.Color(0, 0, 255));
+        rdbNN.setText("Ngày nhập");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -313,9 +335,9 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ckbPNNGAYNHAP)
-                    .addComponent(ckbPNMASACH)
-                    .addComponent(ckbMAPN)
+                    .addComponent(rdbNN)
+                    .addComponent(rdbMS)
+                    .addComponent(rdbMPN)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(btnPNSEACH)))
@@ -325,12 +347,12 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(ckbMAPN)
+                .addComponent(rdbMPN)
                 .addGap(18, 18, 18)
-                .addComponent(ckbPNMASACH)
+                .addComponent(rdbMS)
                 .addGap(18, 18, 18)
-                .addComponent(ckbPNNGAYNHAP)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(rdbNN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnPNSEACH))
         );
 
@@ -391,7 +413,7 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
         PHIEUNHAPSACHLayout.setVerticalGroup(
             PHIEUNHAPSACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PHIEUNHAPSACHLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(23, 23, 23)
                 .addGroup(PHIEUNHAPSACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PHIEUNHAPSACHLayout.createSequentialGroup()
                         .addGroup(PHIEUNHAPSACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -399,19 +421,19 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
                             .addComponent(jLabel12)
                             .addComponent(txtMAPN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtPNSOLUONG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
+                        .addGap(26, 26, 26)
                         .addGroup(PHIEUNHAPSACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(jLabel13)
                             .addComponent(txtPNMASACH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtPNNGAYNHAP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36)
+                        .addGap(30, 30, 30)
                         .addGroup(PHIEUNHAPSACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(jLabel14)
                             .addComponent(txtPNMANV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtPNGIA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                         .addGroup(PHIEUNHAPSACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnPNNHAPMOI)
                             .addComponent(btnPNTHEMMOI)
@@ -419,8 +441,8 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
                             .addComponent(btnPNXOA)))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(84, 84, 84))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(92, 92, 92))
         );
 
         lblBR.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -579,6 +601,15 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
         });
         jMenu3.add(mitPHIEUMUONCT);
 
+        mitPHIEUPHAT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconpp.png"))); // NOI18N
+        mitPHIEUPHAT.setText("Phiếu phạt");
+        mitPHIEUPHAT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitPHIEUPHATActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mitPHIEUPHAT);
+
         mitTHONGKE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconbdtk.jpg"))); // NOI18N
         mitTHONGKE.setText("Thống kê số liệu");
         mitTHONGKE.addActionListener(new java.awt.event.ActionListener() {
@@ -715,22 +746,67 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
 
     private void btnPNCAPNHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPNCAPNHATActionPerformed
 
+        if (txtMAPN.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu nhập");
+            return;
+        }
+        if(kiemloiPN()==false){
+        return;
+        }
+        boolean ckmals = false;
+        for (Phieunhapsach pn : list) {
+            if (pn.getMaphieunhap().equals(txtMAPN.getText())) {
+                ckmals = true;
+                break;
+            }
+        }
+        if (!ckmals) {
+            JOptionPane.showMessageDialog(this, "Mã phiếu nhập không tồn tại");
+            return;
+        }
+        capnhatPhieunhap();
+        laydulieuPhieunhap("");
     }//GEN-LAST:event_btnPNCAPNHATActionPerformed
 
     private void btnPNNHAPMOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPNNHAPMOIActionPerformed
-        // TODO add your handling code here:
+        txtMAPN.setText("");
+        txtPNMASACH.setText("");
+        txtPNGIA.setText("");
+        txtPNNGAYNHAP.setText("");
+        txtPNSOLUONG.setText("");
+        txtPNMANV.setText("");
     }//GEN-LAST:event_btnPNNHAPMOIActionPerformed
 
     private void btnPNTHEMMOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPNTHEMMOIActionPerformed
-
+        if (kiemloiPN() == false) {
+            return;
+        }
+        themPhieunhap();
+        laydulieuPhieunhap("");
     }//GEN-LAST:event_btnPNTHEMMOIActionPerformed
 
     private void btnPNXOAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPNXOAActionPerformed
-
+        if (txtMAPN.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu nhập");
+            return;
+        }
+        boolean ckmals = false;
+        for (Phieunhapsach pn : list) {
+            if (pn.getMaphieunhap().equals(txtMAPN.getText())) {
+                ckmals = true;
+                break;
+            }
+        }
+        if (!ckmals) {
+            JOptionPane.showMessageDialog(this, "Mã phiếu nhập không tồn tại");
+            return;
+        }
+        xoaPhieunhap();
+        laydulieuPhieunhap("");
     }//GEN-LAST:event_btnPNXOAActionPerformed
 
     private void btnPNSEACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPNSEACHActionPerformed
-
+        timkiemPN();
     }//GEN-LAST:event_btnPNSEACHActionPerformed
 
     private void btnDANGXUATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDANGXUATActionPerformed
@@ -754,6 +830,25 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
             Logger.getLogger(frmDANGNHAP.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_mitDOIMKActionPerformed
+
+    private void tblPHIEUNHAPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPHIEUNHAPMouseClicked
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        Phieunhapsach pn = list.get(tblPHIEUNHAP.getSelectedRow());
+        txtMAPN.setText(pn.getMaphieunhap());
+        txtPNMASACH.setText(pn.getMasach());
+        int g = Integer.parseInt(pn.getGia());
+        txtPNGIA.setText(formatter.format(g));
+        txtPNNGAYNHAP.setText(pn.getNgaynhap());
+        txtPNSOLUONG.setText(Integer.toString(pn.getSoluong()));
+        txtPNMANV.setText(pn.getManv());
+    }//GEN-LAST:event_tblPHIEUNHAPMouseClicked
+
+    private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
+        frmPHIEUPHAT frmPP;
+        frmPP = new frmPHIEUPHAT();
+        frmPP.show();
+        dispose();
+    }//GEN-LAST:event_mitPHIEUPHATActionPerformed
 
     /**
      * @param args the command line arguments
@@ -806,18 +901,6 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
     private javax.swing.JButton btnPNXOA;
     private javax.swing.JButton btnSACH;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup10;
-    private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.ButtonGroup buttonGroup3;
-    private javax.swing.ButtonGroup buttonGroup4;
-    private javax.swing.ButtonGroup buttonGroup5;
-    private javax.swing.ButtonGroup buttonGroup6;
-    private javax.swing.ButtonGroup buttonGroup7;
-    private javax.swing.ButtonGroup buttonGroup8;
-    private javax.swing.ButtonGroup buttonGroup9;
-    private javax.swing.JCheckBox ckbMAPN;
-    private javax.swing.JCheckBox ckbPNMASACH;
-    private javax.swing.JCheckBox ckbPNNGAYNHAP;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -844,11 +927,15 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitPHIEUMUON;
     private javax.swing.JMenuItem mitPHIEUMUONCT;
     private javax.swing.JMenuItem mitPHIEUNHAP;
+    private javax.swing.JMenuItem mitPHIEUPHAT;
     private javax.swing.JMenuItem mitSACH;
     private javax.swing.JMenuItem mitTACGIA;
     private javax.swing.JMenuItem mitTHOAT;
     private javax.swing.JMenuItem mitTHONGKE;
     private javax.swing.JMenuItem mitTTPB;
+    private javax.swing.JRadioButton rdbMPN;
+    private javax.swing.JRadioButton rdbMS;
+    private javax.swing.JRadioButton rdbNN;
     private javax.swing.JTable tblPHIEUNHAP;
     private javax.swing.JTextField txtMAPN;
     private javax.swing.JTextField txtPNGIA;
@@ -857,5 +944,126 @@ public class frmPHIEUNHAP extends javax.swing.JFrame {
     private javax.swing.JTextField txtPNNGAYNHAP;
     private javax.swing.JTextField txtPNSOLUONG;
     // End of variables declaration//GEN-END:variables
+private void fillToTableSach() {
+        DefaultTableModel model = (DefaultTableModel) tblPHIEUNHAP.getModel();
+        model.setRowCount(0);
+        for (Phieunhapsach pn : list) {
+            DecimalFormat formatter = new DecimalFormat("###,###,###");
+            int g = Integer.parseInt(pn.getGia());
+            String gia = formatter.format(g);
+            Object[] row = new Object[]{pn.getMaphieunhap(), pn.getMasach(), pn.getSoluong(), pn.getNgaynhap(), gia, pn.getManv()};
+            model.addRow(row);
+        }
+    }
 
+    private void laydulieuPN() {
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        Phieunhapsach pn = list.get(currentindex);
+        txtMAPN.setText(pn.getMaphieunhap());
+        txtPNMASACH.setText(pn.getMasach());
+        int g = Integer.parseInt(pn.getGia());
+        txtPNGIA.setText(formatter.format(g));
+        txtPNNGAYNHAP.setText(pn.getNgaynhap());
+        txtPNSOLUONG.setText(Integer.toString(pn.getSoluong()));
+        txtPNMANV.setText(pn.getManv());
+    }
+
+    private void capnhatPhieunhap() {
+        String mapn = txtMAPN.getText();
+        String masach = txtPNMASACH.getText();
+        String manv = txtPNMANV.getText();
+        int sl = Integer.parseInt(txtPNSOLUONG.getText());
+        String ngaynhap = txtPNNGAYNHAP.getText();
+        String gia = txtPNGIA.getText();
+        Phieunhapsach pn = new Phieunhapsach(mapn, masach, sl, ngaynhap, gia, manv);
+        PhieunhapsachDao.capnhatPhieunhap(pn);
+        JOptionPane.showMessageDialog(this, "Cập nhật phiếu nhập thành công");
+    }
+
+    private void themPhieunhap() {
+        String mapn = null;
+        int a;
+        AD:
+        for (int i = 1; i < 1000; i++) {
+            a = i;
+            String b = Integer.toString(a);
+            if (b.length() == 1) {
+                mapn = "PN00" + a;
+            } else if (b.length() == 2) {
+                mapn = "PN0" + a;
+            } else if (b.length() > 2) {
+                mapn = "PN" + a;
+            } else {
+            }
+            boolean khIsExixst = false;
+            for (Phieunhapsach pn : list) {
+                if (pn.getMaphieunhap().equals(mapn)) {
+                    khIsExixst = true;
+                    break;
+                }
+            }
+            if (!khIsExixst) {
+                break;
+            }
+        }
+        String masach = txtPNMASACH.getText();
+        String manv = txtPNMANV.getText();
+        int sl = Integer.parseInt(txtPNSOLUONG.getText());
+        String ngaynhap = txtPNNGAYNHAP.getText();
+        String gia = txtPNGIA.getText();
+        Phieunhapsach pn = new Phieunhapsach(mapn, masach, sl, ngaynhap, gia, manv);
+        PhieunhapsachDao.themPhieunhap(pn);
+        JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thành công");
+    }
+
+    private void xoaPhieunhap() {
+        PhieunhapsachDao.xoaPhieunhap(txtMAPN.getText());
+        JOptionPane.showMessageDialog(this, "Xóa phiếu nhập thành công");
+    }
+
+    private void timkiemPN() {
+       String sql = "";
+       if(rdbMPN.isSelected()){
+       sql = "WHERE maphieunhap like '%"+txtMAPN.getText()+"%'";
+       }else if(rdbMS.isSelected()){
+        sql = "WHERE masach like '%"+txtPNMASACH.getText()+"%'";
+       }else if(rdbNN.isSelected()){
+        sql = "WHERE ngaynhap like '"+txtPNNGAYNHAP.getText()+"'";
+       }else{}
+        laydulieuPhieunhap(sql);
+    }
+
+    private boolean kiemloiPN() {
+        if (txtPNMASACH.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sách");
+            return false;
+        } else if (txtPNMANV.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã nhân viên");
+            return false;
+        } else if (txtPNSOLUONG.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng");
+            return false;
+        } else if (txtPNNGAYNHAP.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày nhập");
+            return false;
+        } else if (txtPNGIA.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập giá");
+            return false;
+        } else {
+            try {
+                int sl = Integer.parseInt(txtPNSOLUONG.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng bằng số");
+                return false;
+            }
+
+            try {
+                int sl = Integer.parseInt(txtPNGIA.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập giá bằng số");
+                return false;
+            }
+        }
+        return true;
+    }
 }

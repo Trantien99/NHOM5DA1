@@ -29,10 +29,11 @@ public class PhieunhapsachDao {
             String masach = rs.getString(2);
             String soluong = rs.getString(3);
             String ngaynhap = rs.getString(4);
-            String gia = rs.getString(5);
+            int gia = rs.getInt(5);
             String manv = rs.getString(6);
             int sl = Integer.parseInt(soluong);
-            Phieunhapsach pn = new Phieunhapsach(maphieunhap, masach, sl, ngaynhap, gia, manv);
+            String gia1 = Integer.toString(gia);
+            Phieunhapsach pn = new Phieunhapsach(maphieunhap, masach, sl, ngaynhap, gia1, manv);
             list.add(pn);
         }
         return list;
@@ -40,7 +41,7 @@ public class PhieunhapsachDao {
 
     public static void themPhieunhap(Phieunhapsach object) {
         Phieunhapsach pn = object;
-        String sql = "INSERT INTO PHIEUNHAPSACH VALUES ('" + pn.getMaphieunhap() + "','" + pn.getMasach() + "'," + pn.getSoluong() + ",'" + pn.getNgaynhap() + "','" + pn.getGia() + "','" + pn.getManv() + "')";
+        String sql = "INSERT INTO PHIEUNHAPSACH VALUES ('" + pn.getMaphieunhap() + "','" + pn.getMasach() + "'," + pn.getSoluong() + ",'" + pn.getNgaynhap() + "'," + pn.getGia() + ",'" + pn.getManv() + "')";
         JdbcHelper.executeUpdate(sql);
     }
 

@@ -11,7 +11,11 @@ import javax.swing.ImageIcon;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Docgia;
+import model.DocgiaDao;
 
 /**
  *
@@ -23,12 +27,48 @@ public class frmDOCGIA extends javax.swing.JFrame {
      * Creates new form frmMENU
      */
     List<Docgia> list = new ArrayList<>();
+    private int currentindex;
+    private String hinhanh = "";
 
     public frmDOCGIA() {
         initComponents();
+        rdbMDG.setSelected(true);
         this.setSize(970, 540);
         lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/brdg-2.jpg")));
         setLocationRelativeTo(null);
+        laydulieuDocgia("");
+    }
+
+    private void laydulieuDocgia(String sql) {
+        try {
+            list.clear();
+            tblDOCGIA.removeAll();
+            list = DocgiaDao.laydulieuDocgia(sql);
+            fillToTableNhanvien();
+            laydulieuDG();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmDOCGIA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void fillToTableNhanvien() {
+        DefaultTableModel model = (DefaultTableModel) tblDOCGIA.getModel();
+        model.setRowCount(0);
+        for (Docgia dg : list) {
+            Object[] row = new Object[]{dg.getMadg(), dg.getTendg(), dg.getSdt(), dg.getDiachi(), dg.getMk(), dg.getHinhanh()};
+            model.addRow(row);
+        }
+    }
+
+    private void laydulieuDG() {
+        Docgia dg = list.get(currentindex);
+        txtMADG.setText(dg.getMadg());
+        txtTENDG.setText(dg.getTendg());
+        txtDGSDT.setText(dg.getSdt());
+        txtDGDIACHI.setText(dg.getDiachi());
+        txtDGMATKHAU.setText(dg.getMk());
+        btnDGHINH.setIcon(new ImageIcon(getClass().getResource("/IMGDG/" + dg.getHinhanh())));
+        this.hinhanh = dg.getHinhanh();
     }
 
     /**
@@ -70,10 +110,10 @@ public class frmDOCGIA extends javax.swing.JFrame {
         txtTENDG = new javax.swing.JTextField();
         txtDGSDT = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        ckbMADG = new javax.swing.JCheckBox();
-        ckbTENDG = new javax.swing.JCheckBox();
-        ckbDGSDT = new javax.swing.JCheckBox();
         btnDGSEACH = new javax.swing.JButton();
+        rdbMDG = new javax.swing.JRadioButton();
+        rdbTENDG = new javax.swing.JRadioButton();
+        rdbSDT = new javax.swing.JRadioButton();
         btnDGNHAPMOI = new javax.swing.JButton();
         btnDGTHEMMOI = new javax.swing.JButton();
         btnDGCAPNHAT = new javax.swing.JButton();
@@ -98,6 +138,7 @@ public class frmDOCGIA extends javax.swing.JFrame {
         mitPHIEUNHAP = new javax.swing.JMenuItem();
         mitPHIEUMUON = new javax.swing.JMenuItem();
         mitPHIEUMUONCT = new javax.swing.JMenuItem();
+        mitPHIEUPHAT = new javax.swing.JMenuItem();
         mitTHONGKE = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mitHDSD = new javax.swing.JMenuItem();
@@ -216,6 +257,11 @@ public class frmDOCGIA extends javax.swing.JFrame {
         jLabel24.setText("Số điện thoại");
 
         btnDGHINH.setBackground(new java.awt.Color(255, 255, 255));
+        btnDGHINH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDGHINHActionPerformed(evt);
+            }
+        });
 
         tblDOCGIA.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -239,6 +285,11 @@ public class frmDOCGIA extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblDOCGIA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDOCGIAMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tblDOCGIA);
         if (tblDOCGIA.getColumnModel().getColumnCount() > 0) {
             tblDOCGIA.getColumnModel().getColumn(3).setResizable(false);
@@ -247,21 +298,6 @@ public class frmDOCGIA extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jPanel6.setOpaque(false);
-
-        buttonGroup4.add(ckbMADG);
-        ckbMADG.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbMADG.setForeground(new java.awt.Color(0, 0, 255));
-        ckbMADG.setText("Mã độc giả");
-
-        buttonGroup4.add(ckbTENDG);
-        ckbTENDG.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbTENDG.setForeground(new java.awt.Color(0, 0, 255));
-        ckbTENDG.setText("Tên độc giả");
-
-        buttonGroup4.add(ckbDGSDT);
-        ckbDGSDT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbDGSDT.setForeground(new java.awt.Color(0, 0, 255));
-        ckbDGSDT.setText("Số điện thoại");
 
         btnDGSEACH.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnDGSEACH.setForeground(new java.awt.Color(51, 51, 51));
@@ -272,6 +308,21 @@ public class frmDOCGIA extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(rdbMDG);
+        rdbMDG.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMDG.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMDG.setText("Mã độc giả");
+
+        buttonGroup1.add(rdbTENDG);
+        rdbTENDG.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbTENDG.setForeground(new java.awt.Color(0, 0, 255));
+        rdbTENDG.setText("Tên độc giả");
+
+        buttonGroup1.add(rdbSDT);
+        rdbSDT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbSDT.setForeground(new java.awt.Color(0, 0, 255));
+        rdbSDT.setText("SĐT");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -279,32 +330,37 @@ public class frmDOCGIA extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(btnDGSEACH))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ckbMADG)
-                            .addComponent(ckbTENDG)
-                            .addComponent(ckbDGSDT)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(btnDGSEACH)))
+                            .addComponent(rdbMDG)
+                            .addComponent(rdbTENDG)
+                            .addComponent(rdbSDT))))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ckbMADG)
+                .addGap(5, 5, 5)
+                .addComponent(rdbMDG)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ckbTENDG)
+                .addComponent(rdbTENDG)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ckbDGSDT)
-                .addGap(18, 18, 18)
+                .addComponent(rdbSDT)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDGSEACH))
         );
 
         btnDGNHAPMOI.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnDGNHAPMOI.setForeground(new java.awt.Color(51, 51, 51));
         btnDGNHAPMOI.setText("Nhập mới");
+        btnDGNHAPMOI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDGNHAPMOIActionPerformed(evt);
+            }
+        });
 
         btnDGTHEMMOI.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnDGTHEMMOI.setForeground(new java.awt.Color(51, 51, 51));
@@ -411,7 +467,7 @@ public class frmDOCGIA extends javax.swing.JFrame {
                                     .addComponent(jLabel49)
                                     .addComponent(txtDGMATKHAU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
+                        .addGap(18, 18, 18)
                         .addGroup(DOCGIALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDGNHAPMOI)
                             .addComponent(btnDGTHEMMOI)
@@ -575,6 +631,15 @@ public class frmDOCGIA extends javax.swing.JFrame {
         });
         jMenu3.add(mitPHIEUMUONCT);
 
+        mitPHIEUPHAT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconpp.png"))); // NOI18N
+        mitPHIEUPHAT.setText("Phiếu phạt");
+        mitPHIEUPHAT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitPHIEUPHATActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mitPHIEUPHAT);
+
         mitTHONGKE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconbdtk.jpg"))); // NOI18N
         mitTHONGKE.setText("Thống kê số liệu");
         mitTHONGKE.addActionListener(new java.awt.event.ActionListener() {
@@ -732,20 +797,121 @@ public class frmDOCGIA extends javax.swing.JFrame {
     }//GEN-LAST:event_mitDOIMKActionPerformed
 
     private void btnDGXOAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGXOAActionPerformed
-
+        if (txtMADG.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
+            return;
+        }
+         if (kiemloiDG() == false) {
+            return;
+        }
+        boolean ckmals = false;
+        for (Docgia dg : list) {
+            if (dg.getMadg().equals(txtMADG.getText())) {
+                ckmals = true;
+                break;
+            }
+        }
+        if (!ckmals) {
+            JOptionPane.showMessageDialog(this, "Mã độc giả không tồn tại");
+            return;
+        }
+        xoaDocgia();
+        laydulieuDocgia("");
     }//GEN-LAST:event_btnDGXOAActionPerformed
 
     private void btnDGCAPNHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGCAPNHATActionPerformed
-
+        if (txtMADG.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
+            return;
+        }
+        if (kiemloiDG() == false) {
+            return;
+        }
+        boolean ckmals = false;
+        for (Docgia dg : list) {
+            if (dg.getMadg().equals(txtMADG.getText())) {
+                ckmals = true;
+                break;
+            }
+        }
+        if (!ckmals) {
+            JOptionPane.showMessageDialog(this, "Mã độc giả không tồn tại");
+            return;
+        }
+        List<Docgia> listdg = new ArrayList<>();
+        String sql1 = " WHERE sdt like '" + txtDGSDT.getText() + "' and madg != '" + txtMADG.getText() + "'";
+        try {
+            listdg = DocgiaDao.laydulieuDocgia(sql1);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmNNHANVIEN.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (listdg.size() > 0) {
+            JOptionPane.showMessageDialog(this, "SĐT bị trùng lặp");
+            listdg.clear();
+            return;
+        }
+        capnhatDocgia();
+        laydulieuDocgia("");
     }//GEN-LAST:event_btnDGCAPNHATActionPerformed
 
     private void btnDGTHEMMOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGTHEMMOIActionPerformed
-
+        if (kiemloiDG() == false) {
+            return;
+        }
+        for (Docgia dg : list) {
+            if (dg.getSdt().equals(txtDGSDT.getText())) {
+                JOptionPane.showMessageDialog(this, "SĐT bị trùng lặp");
+                return;
+            }
+        }
+        themDocgia();
+        laydulieuDocgia("");
     }//GEN-LAST:event_btnDGTHEMMOIActionPerformed
 
     private void btnDGSEACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGSEACHActionPerformed
-
+        timkiemDocgia();
     }//GEN-LAST:event_btnDGSEACHActionPerformed
+
+    private void tblDOCGIAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDOCGIAMouseClicked
+        Docgia dg = list.get(tblDOCGIA.getSelectedRow());
+        txtMADG.setText(dg.getMadg());
+        txtTENDG.setText(dg.getTendg());
+        txtDGSDT.setText(dg.getSdt());
+        txtDGDIACHI.setText(dg.getDiachi());
+        txtDGMATKHAU.setText(dg.getMk());
+        btnDGHINH.setIcon(new ImageIcon(getClass().getResource("/IMGDG/" + dg.getHinhanh())));
+    }//GEN-LAST:event_tblDOCGIAMouseClicked
+
+    private void btnDGHINHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGHINHActionPerformed
+        JFileChooser fch = new JFileChooser();
+        int result = fch.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                //Lấy tên hình ảnh
+                btnDGHINH.setIcon(new ImageIcon(fch.getSelectedFile().getPath()));
+                this.hinhanh = fch.getSelectedFile().getName();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Lỗi chọn hình");
+            }
+        }
+    }//GEN-LAST:event_btnDGHINHActionPerformed
+
+    private void btnDGNHAPMOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGNHAPMOIActionPerformed
+        txtMADG.setText("");
+        txtTENDG.setText("");
+        txtDGSDT.setText("");
+        txtDGDIACHI.setText("");
+        txtDGMATKHAU.setText("");
+        btnDGHINH.setIcon(new ImageIcon(getClass().getResource("")));
+        this.hinhanh = "";
+    }//GEN-LAST:event_btnDGNHAPMOIActionPerformed
+
+    private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
+        frmPHIEUPHAT frmPP;
+        frmPP = new frmPHIEUPHAT();
+        frmPP.show();
+        dispose();
+    }//GEN-LAST:event_mitPHIEUPHATActionPerformed
 
     /**
      * @param args the command line arguments
@@ -808,9 +974,6 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup7;
     private javax.swing.ButtonGroup buttonGroup8;
     private javax.swing.ButtonGroup buttonGroup9;
-    private javax.swing.JCheckBox ckbDGSDT;
-    private javax.swing.JCheckBox ckbMADG;
-    private javax.swing.JCheckBox ckbTENDG;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -837,11 +1000,15 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitPHIEUMUON;
     private javax.swing.JMenuItem mitPHIEUMUONCT;
     private javax.swing.JMenuItem mitPHIEUNHAP;
+    private javax.swing.JMenuItem mitPHIEUPHAT;
     private javax.swing.JMenuItem mitSACH;
     private javax.swing.JMenuItem mitTACGIA;
     private javax.swing.JMenuItem mitTHOAT;
     private javax.swing.JMenuItem mitTHONGKE;
     private javax.swing.JMenuItem mitTTPB;
+    private javax.swing.JRadioButton rdbMDG;
+    private javax.swing.JRadioButton rdbSDT;
+    private javax.swing.JRadioButton rdbTENDG;
     private javax.swing.JTable tblDOCGIA;
     private javax.swing.JTextArea txtDGDIACHI;
     private javax.swing.JTextField txtDGMATKHAU;
@@ -849,5 +1016,102 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private javax.swing.JTextField txtMADG;
     private javax.swing.JTextField txtTENDG;
     // End of variables declaration//GEN-END:variables
+
+    private void xoaDocgia() {
+        String madg = txtMADG.getText();
+        DocgiaDao.xoaDocgia(madg);
+        JOptionPane.showMessageDialog(this, "Xóa độc giả thành công");
+    }
+
+    private void themDocgia() {
+        String madg = null;
+        int a;
+        AD:
+        for (int i = 1; i < 1000; i++) {
+            a = i;
+            String b = Integer.toString(a);
+            if (b.length() == 1) {
+                madg = "DG00" + a;
+            } else if (b.length() == 2) {
+                madg = "DG0" + a;
+            } else if (b.length() > 2) {
+                madg = "DG" + a;
+            } else {
+            }
+            boolean khIsExixst = false;
+            for (Docgia dg : list) {
+                if (dg.getMadg().equals(madg)) {
+                    khIsExixst = true;
+                    break;
+                }
+            }
+            if (!khIsExixst) {
+                break;
+            }
+        }
+        String ten = txtTENDG.getText();
+        String sdt = txtDGSDT.getText();
+        String diachi = txtDGDIACHI.getText();
+        String matkhau = txtDGMATKHAU.getText();
+        String hinh = this.hinhanh;
+
+        Docgia dg = new Docgia(madg, ten, diachi, sdt, matkhau, hinh);
+        DocgiaDao.themDocgia(dg);
+        JOptionPane.showMessageDialog(this, "Thêm độc giả thành công");
+
+    }
+
+    private void timkiemDocgia() {
+        String sql = "";
+        if (rdbMDG.isSelected()) {
+            sql = " WHERE madg like '%" + txtMADG.getText() + "%'";
+        } else if (rdbSDT.isSelected()) {
+            sql = " WHERE sdt like '%" + txtDGSDT.getText() + "%'";
+        } else if (rdbTENDG.isSelected()) {
+            sql = " WHERE tendg like N'%" + txtTENDG.getText() + "%'";
+        } else {
+        }
+        laydulieuDocgia(sql);
+    }
+
+    private void capnhatDocgia() {
+        String madg = txtMADG.getText();
+        String ten = txtTENDG.getText();
+        String sdt = txtDGSDT.getText();
+        String diachi = txtDGDIACHI.getText();
+        String matkhau = txtDGMATKHAU.getText();
+        String hinh = this.hinhanh;
+
+        Docgia dg = new Docgia(madg, ten, diachi, sdt, matkhau, hinh);
+        DocgiaDao.capnhatDocgia(dg);
+        JOptionPane.showMessageDialog(this, "Cập nhật độc giả thành công");
+    }
+
+    private boolean kiemloiDG() {
+        if (txtTENDG.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên độc giả");
+            return false;
+        } else if (txtDGSDT.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập SĐT độc giả");
+            return false;
+        } else if (txtDGDIACHI.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập địa chỉ độc giả");
+            return false;
+        } else if (txtDGMATKHAU.getText().trim().length() < 8 || txtDGMATKHAU.getText().trim().length() > 16) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu có độ dài từ 8 dến 16 kí tự");
+            return false;
+        } else if (hinhanh.equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hình");
+            return false;
+        } else {
+            try {
+                int sdt = Integer.parseInt(txtDGSDT.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập SĐT bằng số");
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

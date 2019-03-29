@@ -11,8 +11,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Docgia;
+import model.DocgiaDao;
+import model.Nhanvien;
+import model.NhanvienDao;
 import model.Phieumuon;
 import model.PhieumuonDao;
 
@@ -30,6 +36,8 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
 
     public frmPHIEUMUON() {
         initComponents();
+        rdbDT.setSelected(true);
+        rdbMPM.setSelected(true);
         this.setSize(760, 580);
         lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/brpm-1.jpg")));
         setLocationRelativeTo(null);
@@ -53,7 +61,13 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblPHIEUMUON.getModel();
         model.setRowCount(0);
         for (Phieumuon pm : list) {
-            Object[] row = new Object[]{pm.getMaphieumuon(), pm.getMadg(), pm.getManv(), pm.getNgaymuon(), pm.getNgaytra(), pm.getTrangthai()};
+            String tt;
+            if (pm.getTrangthai() == 0) {
+                tt = "Đã trả";
+            } else {
+                tt = "Chưa trả";
+            }
+            Object[] row = new Object[]{pm.getMaphieumuon(), pm.getMadg(), pm.getManv(), pm.getNgaymuon(), pm.getNgaytra(), tt};
             model.addRow(row);
         }
     }
@@ -71,9 +85,9 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             txtPMNGAYMUON.setText(pm.getNgaymuon());
             txtPMNGAYTRA.setText(pm.getNgaytra());
             if (pm.getTrangthai() == 0) {
-                ckbTTDATRA.setSelected(true);
+                rdbDT.setSelected(true);
             } else {
-                ckbTTCHUATRA.setSelected(true);
+                rdbCT.setSelected(true);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Dữ liệu trống");
@@ -119,8 +133,6 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         txtPMMANV = new javax.swing.JTextField();
         txtPMNGAYMUON = new javax.swing.JTextField();
         txtPMNGAYTRA = new javax.swing.JTextField();
-        ckbTTDATRA = new javax.swing.JCheckBox();
-        ckbTTCHUATRA = new javax.swing.JCheckBox();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblPHIEUMUON = new javax.swing.JTable();
         btnPMNHAPMOI = new javax.swing.JButton();
@@ -128,9 +140,12 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         btnPMCAPNHAT = new javax.swing.JButton();
         btnPMXOA = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
-        ckbMAPM = new javax.swing.JCheckBox();
-        ckbPMMADOCGIA = new javax.swing.JCheckBox();
         btnPMSEACH = new javax.swing.JButton();
+        rdbMPM = new javax.swing.JRadioButton();
+        rdbMDG = new javax.swing.JRadioButton();
+        rdbTT = new javax.swing.JRadioButton();
+        rdbDT = new javax.swing.JRadioButton();
+        rdbCT = new javax.swing.JRadioButton();
         lblBR = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -147,6 +162,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         mitPHIEUNHAP = new javax.swing.JMenuItem();
         mitPHIEUMUON = new javax.swing.JMenuItem();
         mitPHIEUMUONCT = new javax.swing.JMenuItem();
+        mitPHIEUPHAT = new javax.swing.JMenuItem();
         mitTHONGKE = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mitHDSD = new javax.swing.JMenuItem();
@@ -272,16 +288,6 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         jLabel37.setForeground(new java.awt.Color(0, 0, 255));
         jLabel37.setText("Trạng thái");
 
-        buttonGroup6.add(ckbTTDATRA);
-        ckbTTDATRA.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbTTDATRA.setForeground(new java.awt.Color(255, 0, 0));
-        ckbTTDATRA.setText("Đã trả");
-
-        buttonGroup6.add(ckbTTCHUATRA);
-        ckbTTCHUATRA.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbTTCHUATRA.setForeground(new java.awt.Color(255, 0, 0));
-        ckbTTCHUATRA.setText("Chưa trả");
-
         tblPHIEUMUON.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -306,6 +312,11 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         btnPMNHAPMOI.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnPMNHAPMOI.setForeground(new java.awt.Color(51, 51, 51));
         btnPMNHAPMOI.setText("Nhập mới");
+        btnPMNHAPMOI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPMNHAPMOIActionPerformed(evt);
+            }
+        });
 
         btnPMTHEMMOI.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnPMTHEMMOI.setForeground(new java.awt.Color(51, 51, 51));
@@ -338,16 +349,6 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jPanel9.setOpaque(false);
 
-        buttonGroup7.add(ckbMAPM);
-        ckbMAPM.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbMAPM.setForeground(new java.awt.Color(0, 0, 255));
-        ckbMAPM.setText("Mã phiếu mượn");
-
-        buttonGroup7.add(ckbPMMADOCGIA);
-        ckbPMMADOCGIA.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbPMMADOCGIA.setForeground(new java.awt.Color(0, 0, 255));
-        ckbPMMADOCGIA.setText("Mã độc giả");
-
         btnPMSEACH.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnPMSEACH.setForeground(new java.awt.Color(51, 51, 51));
         btnPMSEACH.setText("SEACH");
@@ -357,32 +358,60 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup10.add(rdbMPM);
+        rdbMPM.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMPM.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMPM.setText("Mã phiếu mượn");
+
+        buttonGroup10.add(rdbMDG);
+        rdbMDG.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMDG.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMDG.setText("Mã độc giả");
+
+        buttonGroup10.add(rdbTT);
+        rdbTT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbTT.setForeground(new java.awt.Color(0, 0, 255));
+        rdbTT.setText("Trạng thái");
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ckbMAPM)
-                    .addComponent(ckbPMMADOCGIA))
-                .addContainerGap(26, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnPMSEACH)
                 .addGap(38, 38, 38))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdbTT)
+                    .addComponent(rdbMDG)
+                    .addComponent(rdbMPM))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(ckbMAPM)
-                .addGap(18, 18, 18)
-                .addComponent(ckbPMMADOCGIA)
-                .addGap(18, 18, 18)
+                .addGap(14, 14, 14)
+                .addComponent(rdbMPM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rdbMDG)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rdbTT)
+                .addGap(10, 10, 10)
                 .addComponent(btnPMSEACH)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        buttonGroup1.add(rdbDT);
+        rdbDT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbDT.setForeground(new java.awt.Color(255, 0, 0));
+        rdbDT.setText("Đã trả");
+
+        buttonGroup1.add(rdbCT);
+        rdbCT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbCT.setForeground(new java.awt.Color(255, 0, 0));
+        rdbCT.setText("Chưa trả");
 
         javax.swing.GroupLayout PHIEUMUONLayout = new javax.swing.GroupLayout(PHIEUMUON);
         PHIEUMUON.setLayout(PHIEUMUONLayout);
@@ -411,12 +440,12 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
                                     .addComponent(jLabel37))
                                 .addGap(30, 30, 30)
                                 .addGroup(PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(PHIEUMUONLayout.createSequentialGroup()
-                                        .addComponent(ckbTTDATRA)
-                                        .addGap(10, 10, 10)
-                                        .addComponent(ckbTTCHUATRA))
                                     .addComponent(txtPMNGAYTRA)
-                                    .addComponent(txtPMNGAYMUON)))
+                                    .addComponent(txtPMNGAYMUON)
+                                    .addGroup(PHIEUMUONLayout.createSequentialGroup()
+                                        .addComponent(rdbDT)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                        .addComponent(rdbCT))))
                             .addGroup(PHIEUMUONLayout.createSequentialGroup()
                                 .addComponent(btnPMNHAPMOI)
                                 .addGap(18, 18, 18)
@@ -427,7 +456,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
                                 .addComponent(btnPMXOA, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(32, 32, 32)
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(214, Short.MAX_VALUE))
         );
         PHIEUMUONLayout.setVerticalGroup(
             PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,14 +475,14 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
                             .addComponent(jLabel36)
                             .addComponent(txtPMMADOCGIA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtPMNGAYTRA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
+                        .addGap(29, 29, 29)
                         .addGroup(PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel34)
                             .addComponent(jLabel37)
                             .addComponent(txtPMMANV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ckbTTDATRA)
-                            .addComponent(ckbTTCHUATRA))
-                        .addGap(29, 29, 29)
+                            .addComponent(rdbDT)
+                            .addComponent(rdbCT))
+                        .addGap(28, 28, 28)
                         .addGroup(PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnPMNHAPMOI)
                             .addComponent(btnPMTHEMMOI)
@@ -474,7 +503,9 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PHIEUMUON, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(PHIEUMUON, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -623,6 +654,15 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         });
         jMenu3.add(mitPHIEUMUONCT);
 
+        mitPHIEUPHAT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconpp.png"))); // NOI18N
+        mitPHIEUPHAT.setText("Phiếu phạt");
+        mitPHIEUPHAT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitPHIEUPHATActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mitPHIEUPHAT);
+
         mitTHONGKE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconbdtk.jpg"))); // NOI18N
         mitTHONGKE.setText("Thống kê số liệu");
         mitTHONGKE.addActionListener(new java.awt.event.ActionListener() {
@@ -654,13 +694,11 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 743, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addContainerGap(221, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, Short.MAX_VALUE)
         );
 
         pack();
@@ -763,19 +801,60 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     }//GEN-LAST:event_mitTHONGKEActionPerformed
 
     private void btnPMTHEMMOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPMTHEMMOIActionPerformed
-      themPM();
+        if (kiemloiPM() == false) {
+            return;
+        }
+        themPM();
+        laydulieuPhieumuon("");
+        laydulieuPM();
     }//GEN-LAST:event_btnPMTHEMMOIActionPerformed
 
     private void btnPMCAPNHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPMCAPNHATActionPerformed
-
+        if (txtMAPM.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu mượn");
+            return;
+        }
+        if (kiemloiPM() == false) {
+            return;
+        }
+        boolean ckmals = false;
+        for (Phieumuon pm : list) {
+            if (pm.getMaphieumuon().equals(txtMAPM.getText())) {
+                ckmals = true;
+                break;
+            }
+        }
+        if (!ckmals) {
+            JOptionPane.showMessageDialog(this, "Mã phiếu mượn không tồn tại");
+            return;
+        }
+        capnhatPhieumuon();
+        laydulieuPhieumuon("");
+        laydulieuPM();
     }//GEN-LAST:event_btnPMCAPNHATActionPerformed
 
     private void btnPMXOAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPMXOAActionPerformed
-
+        if (txtMAPM.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu mượn");
+            return;
+        }
+        boolean ckmals = false;
+        for (Phieumuon pm : list) {
+            if (pm.getMaphieumuon().equals(txtMAPM.getText())) {
+                ckmals = true;
+                break;
+            }
+        }
+        if (!ckmals) {
+            JOptionPane.showMessageDialog(this, "Mã phiếu mượn không tồn tại");
+            return;
+        }
+        xoaPhieumuon();
+        laydulieuPhieumuon("");
     }//GEN-LAST:event_btnPMXOAActionPerformed
 
     private void btnPMSEACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPMSEACHActionPerformed
-
+        timkiemPhieumuon();
     }//GEN-LAST:event_btnPMSEACHActionPerformed
 
     @SuppressWarnings("empty-statement")
@@ -810,14 +889,31 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             txtPMNGAYMUON.setText(pm.getNgaymuon());
             txtPMNGAYTRA.setText(pm.getNgaytra());
             if (pm.getTrangthai() == 0) {
-                ckbTTDATRA.setSelected(true);
+                rdbDT.setSelected(true);
             } else {
-                ckbTTCHUATRA.setSelected(true);
+                rdbCT.setSelected(true);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Dữ liệu trống");
         }
     }//GEN-LAST:event_tblPHIEUMUONMouseClicked
+
+    private void btnPMNHAPMOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPMNHAPMOIActionPerformed
+        txtMAPM.setText("");
+        txtPMMANV.setText("");
+        txtPMMADOCGIA.setText("");
+        txtPMNGAYMUON.setText("");
+        txtPMNGAYTRA.setText("");
+        rdbDT.setSelected(false);
+        rdbCT.setSelected(false);
+    }//GEN-LAST:event_btnPMNHAPMOIActionPerformed
+
+    private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
+        frmPHIEUPHAT frmPP;
+        frmPP = new frmPHIEUPHAT();
+        frmPP.show();
+        dispose();
+    }//GEN-LAST:event_mitPHIEUPHATActionPerformed
 
     /**
      * @param args the command line arguments
@@ -880,10 +976,6 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup7;
     private javax.swing.ButtonGroup buttonGroup8;
     private javax.swing.ButtonGroup buttonGroup9;
-    private javax.swing.JCheckBox ckbMAPM;
-    private javax.swing.JCheckBox ckbPMMADOCGIA;
-    private javax.swing.JCheckBox ckbTTCHUATRA;
-    private javax.swing.JCheckBox ckbTTDATRA;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
@@ -910,11 +1002,17 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitPHIEUMUON;
     private javax.swing.JMenuItem mitPHIEUMUONCT;
     private javax.swing.JMenuItem mitPHIEUNHAP;
+    private javax.swing.JMenuItem mitPHIEUPHAT;
     private javax.swing.JMenuItem mitSACH;
     private javax.swing.JMenuItem mitTACGIA;
     private javax.swing.JMenuItem mitTHOAT;
     private javax.swing.JMenuItem mitTHONGKE;
     private javax.swing.JMenuItem mitTTPB;
+    private javax.swing.JRadioButton rdbCT;
+    private javax.swing.JRadioButton rdbDT;
+    private javax.swing.JRadioButton rdbMDG;
+    private javax.swing.JRadioButton rdbMPM;
+    private javax.swing.JRadioButton rdbTT;
     private javax.swing.JTable tblPHIEUMUON;
     private javax.swing.JTextField txtMAPM;
     private javax.swing.JTextField txtPMMADOCGIA;
@@ -924,8 +1022,8 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void themPM() {
-        
-         String mapm = null;
+
+        String mapm = null;
         int a;
         AD:
         for (int i = 1; i < 1000; i++) {
@@ -951,19 +1049,153 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             }
         }
 
-       String madg = txtPMMADOCGIA.getText();
-       String manv = txtPMMANV.getText();
-       String ngaym = txtPMNGAYMUON.getText();
-       String ngayt = txtPMNGAYTRA.getText();
-       int tt ;
-       if(ckbTTDATRA.isSelected()){
-       tt = 0;
-       }else{
-       tt = 1;
-       }
-       Phieumuon pm = new Phieumuon(mapm, madg, manv, ngaym, ngayt, tt);
-       PhieumuonDao.themPhieumuon(pm);
-       JOptionPane.showMessageDialog(this, "Thêm thành công");
+        String madg = txtPMMADOCGIA.getText();
+        String manv = txtPMMANV.getText();
+        String ngaym = txtPMNGAYMUON.getText();
+        String ngayt = txtPMNGAYTRA.getText();
+        int tt;
+        if (rdbDT.isSelected()) {
+            tt = 0;
+        } else {
+            tt = 1;
+        }
+        Phieumuon pm = new Phieumuon(mapm, madg, manv, ngaym, ngayt, tt);
+        PhieumuonDao.themPhieumuon(pm);
+        JOptionPane.showMessageDialog(this, "Thêm thành công");
+    }
+
+    private void xoaPhieumuon() {
+        String mapm = txtMAPM.getText();
+        PhieumuonDao.xoaPhieumuon(mapm);
+        JOptionPane.showMessageDialog(this, "Xóa phiếu mượn thành công");
+    }
+
+    private void capnhatPhieumuon() {
+        String mapm = txtMAPM.getText();
+        String madg = txtPMMADOCGIA.getText();
+        String manv = txtPMMANV.getText();
+        String ngaym = txtPMNGAYMUON.getText();
+        String ngayt = txtPMNGAYTRA.getText();
+        int tt;
+        if (rdbDT.isSelected()) {
+            tt = 0;
+        } else {
+            tt = 1;
+        }
+        Phieumuon pm = new Phieumuon(mapm, madg, manv, ngaym, ngayt, tt);
+        PhieumuonDao.capnhatPhieumuon(pm);
+        JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+
+    }
+
+    private boolean kiemloiPM() {
+        String mapm = txtMAPM.getText();
+        String madg = txtPMMADOCGIA.getText();
+        String manv = txtPMMANV.getText();
+        String ngaym = txtPMNGAYMUON.getText();
+        String ngayt = txtPMNGAYTRA.getText();
+        if (madg.equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
+            return false;
+        } else if (manv.equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã nhân viên");
+            return false;
+        } else if (ngaym.equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày mượn");
+            return false;
+        } else if (ngayt.equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày trả");
+            return false;
+        } else if (!rdbDT.isSelected() && !rdbCT.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn trạng thái");
+            return false;
+        } else {
+//            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//            df.setLenient(false);
+//            try {
+//                df.parse(ngaym);
+//                df.parse(ngayt);
+//            } catch (ParseException e) {
+//                JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày tháng năm đúng định dạng ngày/tháng/năm");
+//                return false;
+//            }
+            List<Docgia> listdg = new ArrayList<>();
+            try {
+                listdg = DocgiaDao.laydulieuDocgia("");
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            boolean ckmadg = false;
+            for (Docgia dg : listdg) {
+                if (dg.getMadg().equals(madg)) {
+                    ckmadg = true;
+                    break;
+                }
+            }
+            if (!ckmadg) {
+                JOptionPane.showMessageDialog(this, "Mã độc giả không tồn tại");
+                return false;
+            }
+
+            List<Nhanvien> listnv = new ArrayList<>();
+            try {
+                listnv = NhanvienDao.laydulieuNhanvien("");
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            boolean ckmanv = false;
+            for (Nhanvien nv : listnv) {
+                if (nv.getManv().equals(manv)) {
+                    ckmanv = true;
+                    break;
+                }
+            }
+            if (!ckmanv) {
+                JOptionPane.showMessageDialog(this, "Mã nhân viên không tồn tại");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void timkiemPhieumuon() {
+        String sql = "";
+        if (rdbMPM.isSelected()) {
+            if (txtMAPM.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu mượn");
+                return;
+            } else {
+                sql = " WHERE maphieumuon like '" + txtMAPM.getText() + "'";
+            }
+        } else if (rdbMDG.isSelected()) {
+            if (txtPMMADOCGIA.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
+                return;
+            } else {
+                sql = " WHERE madg like '" + txtPMMADOCGIA.getText() + "'";
+            }
+        } else if (rdbTT.isSelected()) {
+            if (txtPMMADOCGIA.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
+                return;
+            } else {
+                String tt = "";
+                if (rdbDT.isSelected()) {
+                    tt = "0";
+                } else if (rdbCT.isSelected()) {
+                    tt = "1";
+                } else {
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn trạng thái");
+                    return;
+                }
+                sql = " WHERE trangthai like '" + tt + "'";
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn thuộc tính tìm kiếm");
+            return;
+        }
+        laydulieuPhieumuon(sql);
+        laydulieuPM();
     }
 
 }

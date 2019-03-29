@@ -42,13 +42,13 @@ public class NhanvienDao {
 
     public static void themNhanvien(Nhanvien object) {
         Nhanvien nv = object;
-        String sql = "INSERT INTO NHANVIEN VALUES ('" + nv.getManv() + "',N'" + nv.getTennv() + "'," + nv.getNgaysinh() + ",'" + nv.getSdt() + "','" + nv.getEmail() + "',N'" + nv.getDiachi() + "','"+ nv.getVaitro()+ "','"+ nv.getMk()+ "','" + nv.getHinhanh() + "')";
+        String sql = "INSERT INTO NHANVIEN VALUES ('" + nv.getManv() + "',N'" + nv.getTennv() + "','" + nv.getNgaysinh() + "','" + nv.getSdt() + "','" + nv.getEmail() + "',N'" + nv.getDiachi() + "','"+ nv.getVaitro()+ "','"+ nv.getMk()+ "','" + nv.getHinhanh() + "')";
         JdbcHelper.executeUpdate(sql);
     }
 
     public static void capnhatNhanvien(Nhanvien object) {
         Nhanvien nv = object;
-        String sql = "UPDATE NHANVIEN SET tennv = ?,ngaysinh = ?,sdt = ?,email = ?,diachi = ?,vaitro = ?, matkhau = ?, ,hinhanh = ? WHERE manv = ?";
+        String sql = "UPDATE NHANVIEN SET tennv = ?,ngaysinh = ?,sdt = ?,email = ?,diachi = ?,vaitro = ?, matkhau = ?,hinhanh = ? WHERE manv = ?";
         JdbcHelper.executeUpdate(sql, nv.getTennv(), nv.getNgaysinh(), nv.getSdt(), nv.getEmail(), nv.getDiachi(),nv.getVaitro(),nv.getMk(), nv.getHinhanh(), nv.getManv());
     }
 

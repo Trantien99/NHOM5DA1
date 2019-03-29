@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.NhaXB;
 import model.NhaXBDao;
+import model.PhieuphatDao;
 import model.Tacgia;
 import model.TacgiaDao;
 import model.Theloai;
@@ -51,6 +52,8 @@ public final class frmSACH extends javax.swing.JFrame {
         this.setSize(1230, 615);
         lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/br1-1.jpg")));
         setLocationRelativeTo(null);
+        rdbMLS.setSelected(true);
+        rdbMASACH.setSelected(true);
         checkRole(role);
         SACH.show(true);
         LOAISACH.show(false);
@@ -58,6 +61,11 @@ public final class frmSACH extends javax.swing.JFrame {
         lblBR.show(true);
         laydulieuSach("");
         laydulieuSach1();
+        try {
+            PhieuphatDao.capnhatttPP();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmSACH.class.getName()).log(Level.SEVERE, null, ex);
+        }
         lblCR.setText((currentindex + 1) + "/" + sach.size());
     }
 
@@ -93,6 +101,7 @@ public final class frmSACH extends javax.swing.JFrame {
             sach.clear();
             sach = SachDao.laydulieuSach(sql);
             fillToTableSach();
+            laydulieuSach1();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Tải dữ liệu lên thất bại");
         }
@@ -122,15 +131,6 @@ public final class frmSACH extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        buttonGroup3 = new javax.swing.ButtonGroup();
-        buttonGroup4 = new javax.swing.ButtonGroup();
-        buttonGroup5 = new javax.swing.ButtonGroup();
-        buttonGroup6 = new javax.swing.ButtonGroup();
-        buttonGroup7 = new javax.swing.ButtonGroup();
-        buttonGroup8 = new javax.swing.ButtonGroup();
-        buttonGroup9 = new javax.swing.ButtonGroup();
-        buttonGroup10 = new javax.swing.ButtonGroup();
-        buttonGroup11 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btnDANGXUAT = new javax.swing.JButton();
@@ -152,9 +152,9 @@ public final class frmSACH extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         txtTENLS = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        ckbMALS = new javax.swing.JCheckBox();
-        ckbTENLS = new javax.swing.JCheckBox();
         btnSEACHLS = new javax.swing.JButton();
+        rdbMLS = new javax.swing.JRadioButton();
+        rdbTENLS = new javax.swing.JRadioButton();
         btnEXITLS = new javax.swing.JButton();
         btnCHONLS = new javax.swing.JButton();
         BRLS = new javax.swing.JPanel();
@@ -182,12 +182,12 @@ public final class frmSACH extends javax.swing.JFrame {
         btnCAPNHATSACH = new javax.swing.JButton();
         btnXOASACH = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        ckbMASACH = new javax.swing.JCheckBox();
-        ckbTENSACH = new javax.swing.JCheckBox();
-        ckbLOAISACH = new javax.swing.JCheckBox();
-        ckbSACHMATG = new javax.swing.JCheckBox();
-        ckbSACHMANXB = new javax.swing.JCheckBox();
         btnTIMKIEMSACH = new javax.swing.JButton();
+        rdbMASACH = new javax.swing.JRadioButton();
+        rdbTENSACH = new javax.swing.JRadioButton();
+        rdbLOAISACH = new javax.swing.JRadioButton();
+        rdbTACGIA = new javax.swing.JRadioButton();
+        rdbNXB = new javax.swing.JRadioButton();
         btnPR = new javax.swing.JButton();
         btnPR1 = new javax.swing.JButton();
         btnNEXT1 = new javax.swing.JButton();
@@ -213,6 +213,7 @@ public final class frmSACH extends javax.swing.JFrame {
         mitPHIEUNHAP = new javax.swing.JMenuItem();
         mitPHIEUMUON = new javax.swing.JMenuItem();
         mitPHIEUMUONCT = new javax.swing.JMenuItem();
+        mitPHIEUPHAT = new javax.swing.JMenuItem();
         mitTHONGKE = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mitHDSD = new javax.swing.JMenuItem();
@@ -396,12 +397,6 @@ public final class frmSACH extends javax.swing.JFrame {
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(0, 51, 255))); // NOI18N
         jPanel6.setOpaque(false);
 
-        buttonGroup9.add(ckbMALS);
-        ckbMALS.setText("Mã loại sách");
-
-        buttonGroup9.add(ckbTENLS);
-        ckbTENLS.setText("Tên loại sách");
-
         btnSEACHLS.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSEACHLS.setForeground(new java.awt.Color(0, 51, 255));
         btnSEACHLS.setText("SEACH");
@@ -411,27 +406,39 @@ public final class frmSACH extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup2.add(rdbMLS);
+        rdbMLS.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMLS.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMLS.setText("Mã loại sách");
+
+        buttonGroup2.add(rdbTENLS);
+        rdbTENLS.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbTENLS.setForeground(new java.awt.Color(0, 0, 255));
+        rdbTENLS.setText("Tên loại sách");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ckbMALS)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(ckbTENLS, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSEACHLS, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(rdbMLS)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                            .addComponent(btnSEACHLS, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(2, 2, 2))
+                        .addComponent(rdbTENLS, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ckbMALS)
+                .addComponent(rdbMLS)
+                .addGap(7, 7, 7)
+                .addComponent(rdbTENLS)
                 .addGap(18, 18, 18)
-                .addComponent(ckbTENLS)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSEACHLS)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -563,7 +570,7 @@ public final class frmSACH extends javax.swing.JFrame {
             .addGroup(BRLSLayout.createSequentialGroup()
                 .addGap(425, 425, 425)
                 .addComponent(btnBRLS, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(2364, Short.MAX_VALUE))
+                .addContainerGap(2369, Short.MAX_VALUE))
         );
         BRLSLayout.setVerticalGroup(
             BRLSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -681,36 +688,6 @@ public final class frmSACH extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel3.setOpaque(false);
 
-        buttonGroup1.add(ckbMASACH);
-        ckbMASACH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbMASACH.setForeground(new java.awt.Color(0, 0, 255));
-        ckbMASACH.setText("Mã sách");
-
-        buttonGroup1.add(ckbTENSACH);
-        ckbTENSACH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbTENSACH.setForeground(new java.awt.Color(0, 0, 255));
-        ckbTENSACH.setText("Tên sách");
-
-        buttonGroup1.add(ckbLOAISACH);
-        ckbLOAISACH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbLOAISACH.setForeground(new java.awt.Color(0, 0, 255));
-        ckbLOAISACH.setText("Loại sách");
-
-        buttonGroup1.add(ckbSACHMATG);
-        ckbSACHMATG.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbSACHMATG.setForeground(new java.awt.Color(0, 0, 255));
-        ckbSACHMATG.setText("Tác giả");
-        ckbSACHMATG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ckbSACHMATGActionPerformed(evt);
-            }
-        });
-
-        buttonGroup1.add(ckbSACHMANXB);
-        ckbSACHMANXB.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ckbSACHMANXB.setForeground(new java.awt.Color(0, 0, 255));
-        ckbSACHMANXB.setText("Nhà xuất bản");
-
         btnTIMKIEMSACH.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnTIMKIEMSACH.setForeground(new java.awt.Color(51, 51, 51));
         btnTIMKIEMSACH.setText("SEACH");
@@ -720,37 +697,62 @@ public final class frmSACH extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(rdbMASACH);
+        rdbMASACH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbMASACH.setForeground(new java.awt.Color(0, 0, 255));
+        rdbMASACH.setText("Mã sách");
+
+        buttonGroup1.add(rdbTENSACH);
+        rdbTENSACH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbTENSACH.setForeground(new java.awt.Color(0, 0, 255));
+        rdbTENSACH.setText("Tên sách");
+
+        buttonGroup1.add(rdbLOAISACH);
+        rdbLOAISACH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbLOAISACH.setForeground(new java.awt.Color(0, 0, 255));
+        rdbLOAISACH.setText("Loại sách");
+
+        buttonGroup1.add(rdbTACGIA);
+        rdbTACGIA.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbTACGIA.setForeground(new java.awt.Color(0, 0, 255));
+        rdbTACGIA.setText("Tác giả");
+
+        buttonGroup1.add(rdbNXB);
+        rdbNXB.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rdbNXB.setForeground(new java.awt.Color(0, 0, 255));
+        rdbNXB.setText("NXB");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ckbMASACH)
-                    .addComponent(ckbTENSACH)
-                    .addComponent(ckbLOAISACH)
-                    .addComponent(ckbSACHMATG)
-                    .addComponent(ckbSACHMANXB))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(54, Short.MAX_VALUE)
                 .addComponent(btnTIMKIEMSACH)
                 .addGap(46, 46, 46))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdbNXB)
+                    .addComponent(rdbTACGIA)
+                    .addComponent(rdbLOAISACH)
+                    .addComponent(rdbTENSACH)
+                    .addComponent(rdbMASACH))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(ckbMASACH)
+                .addComponent(rdbMASACH)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ckbTENSACH)
+                .addComponent(rdbTENSACH)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ckbLOAISACH)
+                .addComponent(rdbLOAISACH)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ckbSACHMATG)
+                .addComponent(rdbTACGIA)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ckbSACHMANXB)
+                .addComponent(rdbNXB)
                 .addGap(18, 18, 18)
                 .addComponent(btnTIMKIEMSACH)
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -826,10 +828,10 @@ public final class frmSACH extends javax.swing.JFrame {
                 .addGroup(SACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1159, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(SACHLayout.createSequentialGroup()
-                        .addGroup(SACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGroup(SACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
                         .addGap(29, 29, 29)
                         .addGroup(SACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(SACHLayout.createSequentialGroup()
@@ -851,8 +853,8 @@ public final class frmSACH extends javax.swing.JFrame {
                                                 .addGap(140, 140, 140)
                                                 .addComponent(btnPR1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SACHLayout.createSequentialGroup()
-                                                .addComponent(txtMATHELOAI, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(txtMATHELOAI)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jButton1)))
                                         .addGap(34, 34, 34)
                                         .addGroup(SACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -900,7 +902,7 @@ public final class frmSACH extends javax.swing.JFrame {
                         .addComponent(btnHINHSACH, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(2023, Short.MAX_VALUE))
+                .addContainerGap(2028, Short.MAX_VALUE))
         );
         SACHLayout.setVerticalGroup(
             SACHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1094,6 +1096,15 @@ public final class frmSACH extends javax.swing.JFrame {
         });
         jMenu3.add(mitPHIEUMUONCT);
 
+        mitPHIEUPHAT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconpp.png"))); // NOI18N
+        mitPHIEUPHAT.setText("Phiếu phạt");
+        mitPHIEUPHAT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitPHIEUPHATActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mitPHIEUPHAT);
+
         mitTHONGKE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICON/iconbdtk.jpg"))); // NOI18N
         mitTHONGKE.setText("Thống kê số liệu");
         mitTHONGKE.addActionListener(new java.awt.event.ActionListener() {
@@ -1132,10 +1143,6 @@ public final class frmSACH extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ckbSACHMATGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbSACHMATGActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ckbSACHMATGActionPerformed
 
     private void mitDANGXUATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDANGXUATActionPerformed
         frmDANGNHAP frmDN;
@@ -1234,7 +1241,9 @@ public final class frmSACH extends javax.swing.JFrame {
 
     private void btnTHEMMOISACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTHEMMOISACHActionPerformed
         try {
-            kiemloisach();
+            if (kiemloisach() == false) {
+                return;
+            }
             themSach();
             laydulieuSach("");
             lblCR.setText((currentindex + 1) + "/" + sach.size());
@@ -1506,7 +1515,17 @@ public final class frmSACH extends javax.swing.JFrame {
         }
         if (kiemtraloiLS() == false) {
             return;
-        } else {
+        }
+        boolean ckmals = false;
+        for (Theloai ls : tloai) {
+            if (ls.getMatl().equals(txtMALS.getText())) {
+                ckmals = true;
+                break;
+            }
+        }
+        if (!ckmals) {
+            JOptionPane.showMessageDialog(this, "Mã loại sách không tồn tại");
+            return;
         }
         capnhatLoaisach();
         laydulieuLoaisach("");
@@ -1535,6 +1554,13 @@ public final class frmSACH extends javax.swing.JFrame {
     private void btnSEACHLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSEACHLSActionPerformed
         timkiemLoaisach();
     }//GEN-LAST:event_btnSEACHLSActionPerformed
+
+    private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
+        frmPHIEUPHAT frmPP;
+        frmPP = new frmPHIEUPHAT();
+        frmPP.show();
+        dispose();
+    }//GEN-LAST:event_mitPHIEUPHATActionPerformed
 
     private void fillToTableSach() {
         DefaultTableModel model = (DefaultTableModel) tblSACH.getModel();
@@ -1620,23 +1646,7 @@ public final class frmSACH extends javax.swing.JFrame {
     private javax.swing.JButton btnXOALS;
     private javax.swing.JButton btnXOASACH;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup10;
-    private javax.swing.ButtonGroup buttonGroup11;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.ButtonGroup buttonGroup3;
-    private javax.swing.ButtonGroup buttonGroup4;
-    private javax.swing.ButtonGroup buttonGroup5;
-    private javax.swing.ButtonGroup buttonGroup6;
-    private javax.swing.ButtonGroup buttonGroup7;
-    private javax.swing.ButtonGroup buttonGroup8;
-    private javax.swing.ButtonGroup buttonGroup9;
-    private javax.swing.JCheckBox ckbLOAISACH;
-    private javax.swing.JCheckBox ckbMALS;
-    private javax.swing.JCheckBox ckbMASACH;
-    private javax.swing.JCheckBox ckbSACHMANXB;
-    private javax.swing.JCheckBox ckbSACHMATG;
-    private javax.swing.JCheckBox ckbTENLS;
-    private javax.swing.JCheckBox ckbTENSACH;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1671,11 +1681,19 @@ public final class frmSACH extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitPHIEUMUON;
     private javax.swing.JMenuItem mitPHIEUMUONCT;
     private javax.swing.JMenuItem mitPHIEUNHAP;
+    private javax.swing.JMenuItem mitPHIEUPHAT;
     private javax.swing.JMenuItem mitSACH;
     private javax.swing.JMenuItem mitTACGIA;
     private javax.swing.JMenuItem mitTHOAT;
     private javax.swing.JMenuItem mitTHONGKE;
     private javax.swing.JMenuItem mitTTPB;
+    private javax.swing.JRadioButton rdbLOAISACH;
+    private javax.swing.JRadioButton rdbMASACH;
+    private javax.swing.JRadioButton rdbMLS;
+    private javax.swing.JRadioButton rdbNXB;
+    private javax.swing.JRadioButton rdbTACGIA;
+    private javax.swing.JRadioButton rdbTENLS;
+    private javax.swing.JRadioButton rdbTENSACH;
     private javax.swing.JTable tblLOAISACH;
     private javax.swing.JTable tblSACH;
     private javax.swing.JTextField txtFILE;
@@ -1694,7 +1712,7 @@ public final class frmSACH extends javax.swing.JFrame {
         String masach = null;
         int a;
         AD:
-        for (int i = 1; i < 1000; i++) {
+        for (int i = 1; i < 5000; i++) {
             a = i;
             String b = Integer.toString(a);
             if (b.length() == 1) {
@@ -1779,15 +1797,15 @@ public final class frmSACH extends javax.swing.JFrame {
 
     public void timkiemSach() {
         String sql = "";
-        if (ckbMASACH.isSelected()) {
+        if (rdbMASACH.isSelected()) {
             sql = "Where masach like '%" + txtMASACH.getText() + "%'";
-        } else if (ckbTENSACH.isSelected()) {
+        } else if (rdbTENSACH.isSelected()) {
             sql = "Where tensach like N'%" + txtTENSACH.getText() + "%'";
-        } else if (ckbLOAISACH.isSelected()) {
+        } else if (rdbLOAISACH.isSelected()) {
             sql = "Where matl like N'%" + txtMATHELOAI.getText() + "%'";
-        } else if (ckbSACHMATG.isSelected()) {
+        } else if (rdbTACGIA.isSelected()) {
             sql = "Where matacgia like '%" + txtSACHMATG.getText() + "%'";
-        } else if (ckbSACHMANXB.isSelected()) {
+        } else if (rdbNXB.isSelected()) {
             sql = "Where manxb like '%" + txtSACHMANXB.getText() + "%'";
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn thuộc tính tìm kiếm");
@@ -1972,9 +1990,9 @@ public final class frmSACH extends javax.swing.JFrame {
 
     private void timkiemLoaisach() {
         String sql = "";
-        if (ckbMALS.isSelected()) {
+        if (rdbMLS.isSelected()) {
             sql = " Where matl like'" + txtMALS.getText() + "'";
-        } else if (ckbTENLS.isSelected()) {
+        } else if (rdbTENLS.isSelected()) {
             sql = " Where tentl like N'%" + txtTENLS.getText() + "%'";
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn thuộc tính tìm kiếm");

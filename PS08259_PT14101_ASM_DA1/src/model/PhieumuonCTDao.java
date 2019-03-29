@@ -36,7 +36,7 @@ public class PhieumuonCTDao {
 
     public static void themPhieumuonCT(PhieumuonCT object) {
         PhieumuonCT pmct = object;
-        String sql = "INSERT INTO PHIEUMUONCT VALUES ('" + pmct.getMaphieumuonct()+ "','" + pmct.getMasach() + "'," + pmct.getMaphieumuon() + "')";
+        String sql = "INSERT INTO PHIEUMUONCT VALUES ('" + pmct.getMaphieumuonct()+ "','" + pmct.getMasach() + "','" + pmct.getMaphieumuon() + "')";
         JdbcHelper.executeUpdate(sql);
     }
 
