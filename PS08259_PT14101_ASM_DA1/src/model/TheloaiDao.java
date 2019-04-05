@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jdbchelp.JdbcHelper;
 
 /**
@@ -16,11 +18,12 @@ import jdbchelp.JdbcHelper;
  * @author My PC
  */
 public class TheloaiDao {
-    public static List<Theloai> laydulieuTheloai(String ma) throws SQLException{
-    List<Theloai> list = new ArrayList<>();
+
+    public static List<Theloai> laydulieuTheloai(String ma) throws SQLException {
+        List<Theloai> list = new ArrayList<>();
         String sql = "SELECT * FROM THELOAI";
-        if(ma.length()>0){
-        sql+= " " + ma;
+        if (ma.length() > 0) {
+            sql += " " + ma;
         }
         ResultSet rs = JdbcHelper.executeQuery(sql);
         while (rs.next()) {
@@ -39,13 +42,25 @@ public class TheloaiDao {
     }
 
     public static void capnhatTheloai(Theloai object) {
-         Theloai tl = object;
+        Theloai tl = object;
         String sql = "UPDATE THELOAI SET tentl = ? WHERE matl = ?";
-        JdbcHelper.executeUpdate(sql,  tl.getTentl(),tl.getMatl());
+        JdbcHelper.executeUpdate(sql, tl.getTentl(), tl.getMatl());
     }
 
     public static void xoaTheloai(String matl) {
         String sql = "DELETE FROM THELOAI WHERE matl = ?";
         JdbcHelper.executeUpdate(sql, matl);
+    }
+
+    public static boolean kiemtraTL(String matl) {
+        try {
+            List<Theloai> tl = TheloaiDao.laydulieuTheloai(" Where matl   = '" + matl + "'");
+            if (tl.isEmpty()) {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TheloaiDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
 }

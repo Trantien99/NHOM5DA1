@@ -452,7 +452,7 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel38" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -466,27 +466,22 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="txtPMCTMAPHIEUMUON" pref="137" max="32767" attributes="0"/>
-                                              <Component id="txtMAPMCT" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="txtPMCTMASACH" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="txtPMCTMAPHIEUMUON" pref="137" max="32767" attributes="0"/>
+                                          <Component id="txtMAPMCT" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtPMCTMASACH" alignment="0" max="32767" attributes="0"/>
                                       </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="btnPMCTTHEMMOI" max="32767" attributes="0"/>
-                                              <Component id="btnPMCTXOA" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="btnPMCTTHEMMOI" max="32767" attributes="0"/>
+                                          <Component id="btnPMCTXOA" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                                   <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane8" alignment="0" min="-2" pref="505" max="-2" attributes="0"/>
+                              <Component id="jScrollPane8" min="-2" pref="505" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="28" max="32767" attributes="0"/>
+                          <EmptySpace pref="35" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -565,6 +560,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtMAPMCT">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtPMCTMAPHIEUMUON">
                 </Component>
@@ -692,33 +690,39 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                      <Component id="btnPMCTSEACH" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtSEACH" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                              <Component id="btnPMCTSEACH" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="rdbMPMCT" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="rdbMPM" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="rdbMS" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="rdbMPMCT" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="rdbMPM" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="rdbMS" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="28" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Component id="txtSEACH" pref="31" max="32767" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="rdbMPMCT" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="rdbMPM" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="rdbMS" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="btnPMCTSEACH" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="12" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -779,6 +783,8 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="M&#xe3; s&#xe1;ch"/>
                       </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtSEACH">
                     </Component>
                   </SubComponents>
                 </Container>

@@ -26,6 +26,8 @@ public class frmTHONGKE extends javax.swing.JFrame {
      */
     List<Thongke> list = new ArrayList<>();
     private int ma;
+    private int role;
+    private String manv;
 
     public frmTHONGKE() {
         initComponents();
@@ -34,6 +36,25 @@ public class frmTHONGKE extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         thongke(1);
 
+    }
+
+    // set vai trò quản lý
+    public void setRole(int role) {
+        this.role = role;
+        checkRole(role);
+    }
+// set mã nhân vên
+
+    public void setManv(String manv) {
+        this.manv = manv;
+    }
+// kiểm tra vai trò : 1 - Quản lý , 2 - Nhân viên
+
+    public void checkRole(int role) {
+        if (role == 1) {
+            mitNHANVIEN.hide();
+            mitTHONGKE.hide();
+        }
     }
 
     private void thongke(int ma) {
@@ -576,7 +597,7 @@ public class frmTHONGKE extends javax.swing.JFrame {
     private void mitDANGXUATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDANGXUATActionPerformed
         frmDANGNHAP frmDN;
         try {
-            frmDN = new frmDANGNHAP();;
+            frmDN = new frmDANGNHAP();
             frmDN.show();
             dispose();
         } catch (ClassNotFoundException | SQLException ex1) {
@@ -590,6 +611,8 @@ public class frmTHONGKE extends javax.swing.JFrame {
 
     private void btnSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_btnSACHActionPerformed
@@ -597,48 +620,64 @@ public class frmTHONGKE extends javax.swing.JFrame {
     private void btnPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUNHAPActionPerformed
 
     private void btnPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONActionPerformed
 
     private void btnPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONCTActionPerformed
 
     private void mitNHANVIENActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNHANVIENActionPerformed
         frmNNHANVIEN frmNV = new frmNNHANVIEN();
+        frmNV.setRole(role);
+        frmNV.setManv(manv);
         frmNV.show();
         dispose();
     }//GEN-LAST:event_mitNHANVIENActionPerformed
 
     private void mitDOCGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDOCGIAActionPerformed
         frmDOCGIA frmDG = new frmDOCGIA();
+        frmDG.setRole(role);
+        frmDG.setManv(manv);
         frmDG.show();
         dispose();
     }//GEN-LAST:event_mitDOCGIAActionPerformed
 
     private void mitSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_mitSACHActionPerformed
 
     private void mitTACGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTACGIAActionPerformed
         frmTACGIA frmTG = new frmTACGIA();
+        frmTG.setRole(role);
+        frmTG.setManv(manv);
         frmTG.show();
         dispose();
     }//GEN-LAST:event_mitTACGIAActionPerformed
 
     private void mitNXBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNXBActionPerformed
         frmNXB frmN = new frmNXB();
+        frmN.setRole(role);
+        frmN.setManv(manv);
         frmN.show();
         dispose();
     }//GEN-LAST:event_mitNXBActionPerformed
@@ -646,24 +685,32 @@ public class frmTHONGKE extends javax.swing.JFrame {
     private void mitPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUNHAPActionPerformed
 
     private void mitPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONActionPerformed
 
     private void mitPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONCTActionPerformed
 
     private void mitTHONGKEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTHONGKEActionPerformed
         frmTHONGKE frmTK = new frmTHONGKE();
+        frmTK.setRole(role);
+        frmTK.setManv(manv);
         frmTK.show();
         dispose();
     }//GEN-LAST:event_mitTHONGKEActionPerformed
@@ -716,6 +763,8 @@ public class frmTHONGKE extends javax.swing.JFrame {
     private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
         frmPHIEUPHAT frmPP;
         frmPP = new frmPHIEUPHAT();
+        frmPP.setRole(role);
+        frmPP.setManv(manv);
         frmPP.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUPHATActionPerformed
@@ -817,14 +866,21 @@ public class frmTHONGKE extends javax.swing.JFrame {
         String nam = (String) cbbNAM.getSelectedItem();
         list.clear();
         tblTHONGKE.removeAll();
-        if (ma == 1) {
-            list = ThongkeDao.thongketongluotmuon();
-        } else if (ma == 2) {
-            list = ThongkeDao.thongkeluotmuontheongay(ngay + "-" + thang + "-" + nam);
-        } else if (ma == 3) {
-            list = ThongkeDao.thongkeluotmuontheothang(thang, nam);
-        } else if (ma == 4) {
-            list = ThongkeDao.thongkeluotmuontheonam(nam);
+        switch (ma) {
+            case 1:
+                list = ThongkeDao.thongketongluotmuon();
+                break;
+            case 2:
+                list = ThongkeDao.thongkeluotmuontheongay(ngay + "-" + thang + "-" + nam);
+                break;
+            case 3:
+                list = ThongkeDao.thongkeluotmuontheothang(thang, nam);
+                break;
+            case 4:
+                list = ThongkeDao.thongkeluotmuontheonam(nam);
+                break;
+            default:
+                break;
         }
         fillToTableTK();
 

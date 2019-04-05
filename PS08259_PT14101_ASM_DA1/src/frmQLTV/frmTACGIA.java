@@ -43,6 +43,25 @@ public class frmTACGIA extends javax.swing.JFrame {
 
     }
 
+    // set vai trò quản lý
+    public void setRole(int role) {
+        this.role = role;
+        checkRole(role);
+    }
+// set mã nhân vên
+
+    public void setManv(String manv) {
+        this.manv = manv;
+    }
+// kiểm tra vai trò : 1 - Quản lý , 2 - Nhân viên
+
+    public void checkRole(int role) {
+        if (role == 1) {
+            mitNHANVIEN.hide();
+            mitTHONGKE.hide();
+        }
+    }
+
     private void laydulieuTacgia(String sql) {
         try {
             tblTACGIA.removeAll();
@@ -51,7 +70,7 @@ public class frmTACGIA extends javax.swing.JFrame {
             fillToTableTacgia();
             laydulieuTacgia1();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Tải dữ liệu lên thất bại");
+            JOptionPane.showMessageDialog(this, "Dữ liệu trống");
         }
     }
 
@@ -95,6 +114,7 @@ public class frmTACGIA extends javax.swing.JFrame {
         btnTGSEACH = new javax.swing.JButton();
         rdbMTG = new javax.swing.JRadioButton();
         rdbTTG = new javax.swing.JRadioButton();
+        txtSEACH = new javax.swing.JTextField();
         btnTGNHAPMOI = new javax.swing.JButton();
         btnTGTHEMMOI = new javax.swing.JButton();
         btnTGCAPNHAT = new javax.swing.JButton();
@@ -260,6 +280,8 @@ public class frmTACGIA extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tblTACGIA);
 
+        txtMATG.setEnabled(false);
+
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jPanel7.setOpaque(false);
@@ -282,6 +304,8 @@ public class frmTACGIA extends javax.swing.JFrame {
         rdbTTG.setForeground(new java.awt.Color(0, 0, 255));
         rdbTTG.setText("Tên tác giả");
 
+        txtSEACH.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -289,22 +313,27 @@ public class frmTACGIA extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(btnTGSEACH))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(rdbMTG))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(rdbTTG)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(btnTGSEACH))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(rdbTTG))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(rdbMTG)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtSEACH, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSEACH)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdbMTG)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbTTG)
                 .addGap(18, 18, 18)
                 .addComponent(btnTGSEACH)
@@ -634,6 +663,8 @@ public class frmTACGIA extends javax.swing.JFrame {
 
     private void btnSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_btnSACHActionPerformed
@@ -641,48 +672,64 @@ public class frmTACGIA extends javax.swing.JFrame {
     private void btnPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUNHAPActionPerformed
 
     private void btnPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONActionPerformed
 
     private void btnPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONCTActionPerformed
 
     private void mitNHANVIENActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNHANVIENActionPerformed
         frmNNHANVIEN frmNV = new frmNNHANVIEN();
+        frmNV.setRole(role);
+        frmNV.setManv(manv);
         frmNV.show();
         dispose();
     }//GEN-LAST:event_mitNHANVIENActionPerformed
 
     private void mitDOCGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDOCGIAActionPerformed
         frmDOCGIA frmDG = new frmDOCGIA();
+        frmDG.setRole(role);
+        frmDG.setManv(manv);
         frmDG.show();
         dispose();
     }//GEN-LAST:event_mitDOCGIAActionPerformed
 
     private void mitSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_mitSACHActionPerformed
 
     private void mitTACGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTACGIAActionPerformed
         frmTACGIA frmTG = new frmTACGIA();
+        frmTG.setRole(role);
+        frmTG.setManv(manv);
         frmTG.show();
         dispose();
     }//GEN-LAST:event_mitTACGIAActionPerformed
 
     private void mitNXBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNXBActionPerformed
         frmNXB frmN = new frmNXB();
+        frmN.setRole(role);
+        frmN.setManv(manv);
         frmN.show();
         dispose();
     }//GEN-LAST:event_mitNXBActionPerformed
@@ -690,24 +737,32 @@ public class frmTACGIA extends javax.swing.JFrame {
     private void mitPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUNHAPActionPerformed
 
     private void mitPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONActionPerformed
 
     private void mitPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONCTActionPerformed
 
     private void mitTHONGKEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTHONGKEActionPerformed
         frmTHONGKE frmTK = new frmTHONGKE();
+        frmTK.setRole(role);
+        frmTK.setManv(manv);
         frmTK.show();
         dispose();
     }//GEN-LAST:event_mitTHONGKEActionPerformed
@@ -742,22 +797,7 @@ public class frmTACGIA extends javax.swing.JFrame {
     }//GEN-LAST:event_tblTACGIAMouseClicked
 
     private void btnTGCAPNHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTGCAPNHATActionPerformed
-        if (txtMATG.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã tác giả");
-            return;
-        }
         if (kiemloiTacgia() == false) {
-            return;
-        } 
-        boolean ckmals = false;
-        for (Tacgia tg : list) {
-            if (tg.getMatacgia().equals(txtMATG.getText())) {
-                ckmals = true;
-                break;
-            }
-        }
-        if (!ckmals) {
-            JOptionPane.showMessageDialog(this, "Mã tác giả không tồn tại");
             return;
         }
         capnhatTacgia();
@@ -765,22 +805,8 @@ public class frmTACGIA extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTGCAPNHATActionPerformed
 
     private void btnTGXOAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTGXOAActionPerformed
-        if (txtMATG.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã tác giả");
-            return;
-        }
-        boolean ckmals = false;
-        for (Tacgia tg : list) {
-            if (tg.getMatacgia().equals(txtMATG.getText())) {
-                ckmals = true;
-                break;
-            }
-        }
-        if (!ckmals) {
-            JOptionPane.showMessageDialog(this, "Mã tác giả không tồn tại");
-            return;
-        }
         xoaTacgia();
+        currentindex = 0;
         laydulieuTacgia("");
     }//GEN-LAST:event_btnTGXOAActionPerformed
 
@@ -831,6 +857,8 @@ public class frmTACGIA extends javax.swing.JFrame {
     private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
         frmPHIEUPHAT frmPP;
         frmPP = new frmPHIEUPHAT();
+        frmPP.setRole(role);
+        frmPP.setManv(manv);
         frmPP.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUPHATActionPerformed
@@ -937,6 +965,7 @@ public class frmTACGIA extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdbTTG;
     private javax.swing.JTable tblTACGIA;
     private javax.swing.JTextField txtMATG;
+    private javax.swing.JTextField txtSEACH;
     private javax.swing.JTextField txtTENTG;
     private javax.swing.JTextArea txtTGGHICHU;
     // End of variables declaration//GEN-END:variables
@@ -957,16 +986,16 @@ public class frmTACGIA extends javax.swing.JFrame {
             btnTGHINH.setIcon(new ImageIcon(getClass().getResource("/IMGTG/" + tg.getHinhanh())));
             this.hinhanh = tg.getHinhanh();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Dữ liệu trống");
+            JOptionPane.showMessageDialog(this, "Không tìm thấy tác giả");
         }
     }
 
     private void timkiemTacgia() {
         String sql = "";
         if (rdbMTG.isSelected()) {
-            sql = "where matacgia  like '%" + txtMATG.getText() + "%'";
+            sql = "where matacgia  like '%" + txtSEACH.getText() + "%'";
         } else if (rdbTTG.isSelected()) {
-            sql = "where tentacgia  like N'%" + txtTENTG.getText() + "%'";
+            sql = "where tentacgia  like N'%" + txtSEACH.getText() + "%'";
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn thuộc tính để tìm kiếm");
             return;

@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jdbchelp.JdbcHelper;
 
 /**
@@ -20,8 +22,8 @@ public class TacgiaDao {
     public static List<Tacgia> laydulieuTacgia(String ma) throws SQLException {
         List<Tacgia> list = new ArrayList<>();
         String sql = "SELECT * FROM TACGIA";
-        if(ma.length()>0){
-        sql+= " " + ma;
+        if (ma.length() > 0) {
+            sql += " " + ma;
         }
         ResultSet rs = JdbcHelper.executeQuery(sql);
         while (rs.next()) {
@@ -42,7 +44,7 @@ public class TacgiaDao {
     }
 
     public static void capnhatTacgia(Tacgia object) {
-         Tacgia tg = object;
+        Tacgia tg = object;
         String sql = "UPDATE TACGIA SET tentacgia = ?,ghichu = ?,hinhanh = ? WHERE matacgia = ?";
         JdbcHelper.executeUpdate(sql, tg.getTentacgia(), tg.getGhichu(), tg.getHinhanh(), tg.getMatacgia());
     }
@@ -50,5 +52,17 @@ public class TacgiaDao {
     public static void xoaTacgia(String matacgia) {
         String sql = "DELETE FROM TACGIA WHERE matacgia = ?";
         JdbcHelper.executeUpdate(sql, matacgia);
+    }
+
+    public static boolean kiemtraTacgia(String matacgia) {
+        try {
+            List<Tacgia> s = TacgiaDao.laydulieuTacgia(" Where matacgia  = '" + matacgia + "'");
+            if (s.isEmpty()) {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TacgiaDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
 }

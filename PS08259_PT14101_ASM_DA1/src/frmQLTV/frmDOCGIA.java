@@ -29,6 +29,8 @@ public class frmDOCGIA extends javax.swing.JFrame {
     List<Docgia> list = new ArrayList<>();
     private int currentindex;
     private String hinhanh = "";
+    private int role;
+    private String manv;
 
     public frmDOCGIA() {
         initComponents();
@@ -39,6 +41,25 @@ public class frmDOCGIA extends javax.swing.JFrame {
         laydulieuDocgia("");
     }
 
+    // set vai trò quản lý
+    public void setRole(int role) {
+        this.role = role;
+        checkRole(role);
+    }
+// set mã nhân vên
+
+    public void setManv(String manv) {
+        this.manv = manv;
+    }
+// kiểm tra vai trò : 1 - Quản lý , 2 - Nhân viên
+
+    public void checkRole(int role) {
+        if (role == 1) {
+            mitNHANVIEN.hide();
+            mitTHONGKE.hide();
+        }
+    }
+
     private void laydulieuDocgia(String sql) {
         try {
             list.clear();
@@ -47,7 +68,7 @@ public class frmDOCGIA extends javax.swing.JFrame {
             fillToTableNhanvien();
             laydulieuDG();
         } catch (SQLException ex) {
-            Logger.getLogger(frmDOCGIA.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Dữ liệu trống");
         }
     }
 
@@ -61,14 +82,21 @@ public class frmDOCGIA extends javax.swing.JFrame {
     }
 
     private void laydulieuDG() {
-        Docgia dg = list.get(currentindex);
-        txtMADG.setText(dg.getMadg());
-        txtTENDG.setText(dg.getTendg());
-        txtDGSDT.setText(dg.getSdt());
-        txtDGDIACHI.setText(dg.getDiachi());
-        txtDGMATKHAU.setText(dg.getMk());
-        btnDGHINH.setIcon(new ImageIcon(getClass().getResource("/IMGDG/" + dg.getHinhanh())));
-        this.hinhanh = dg.getHinhanh();
+        try {
+            if (list.size() == 1) {
+                currentindex = 0;
+            }
+            Docgia dg = list.get(currentindex);
+            txtMADG.setText(dg.getMadg());
+            txtTENDG.setText(dg.getTendg());
+            txtDGSDT.setText(dg.getSdt());
+            txtDGDIACHI.setText(dg.getDiachi());
+            txtDGMATKHAU.setText(dg.getMk());
+            btnDGHINH.setIcon(new ImageIcon(getClass().getResource("/IMGDG/" + dg.getHinhanh())));
+            this.hinhanh = dg.getHinhanh();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy độc giả");
+        }
     }
 
     /**
@@ -114,6 +142,7 @@ public class frmDOCGIA extends javax.swing.JFrame {
         rdbMDG = new javax.swing.JRadioButton();
         rdbTENDG = new javax.swing.JRadioButton();
         rdbSDT = new javax.swing.JRadioButton();
+        txtSEACH = new javax.swing.JTextField();
         btnDGNHAPMOI = new javax.swing.JButton();
         btnDGTHEMMOI = new javax.swing.JButton();
         btnDGCAPNHAT = new javax.swing.JButton();
@@ -295,6 +324,8 @@ public class frmDOCGIA extends javax.swing.JFrame {
             tblDOCGIA.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        txtMADG.setEnabled(false);
+
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         jPanel6.setOpaque(false);
@@ -323,6 +354,8 @@ public class frmDOCGIA extends javax.swing.JFrame {
         rdbSDT.setForeground(new java.awt.Color(0, 0, 255));
         rdbSDT.setText("SĐT");
 
+        txtSEACH.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -330,20 +363,22 @@ public class frmDOCGIA extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(btnDGSEACH))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rdbMDG)
                             .addComponent(rdbTENDG)
-                            .addComponent(rdbSDT))))
-                .addContainerGap(43, Short.MAX_VALUE))
+                            .addComponent(rdbSDT)
+                            .addComponent(txtSEACH, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(btnDGSEACH)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(5, 5, 5)
+                .addComponent(txtSEACH, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbMDG)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbTENDG)
@@ -475,12 +510,11 @@ public class frmDOCGIA extends javax.swing.JFrame {
                             .addComponent(btnDGXOA)))
                     .addGroup(DOCGIALayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(DOCGIALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDGHINH, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(23, 23, 23)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                        .addComponent(btnDGHINH, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         lblBR.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -696,6 +730,8 @@ public class frmDOCGIA extends javax.swing.JFrame {
 
     private void btnSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_btnSACHActionPerformed
@@ -703,48 +739,64 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private void btnPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUNHAPActionPerformed
 
     private void btnPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONActionPerformed
 
     private void btnPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONCTActionPerformed
 
     private void mitNHANVIENActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNHANVIENActionPerformed
         frmNNHANVIEN frmNV = new frmNNHANVIEN();
+        frmNV.setRole(role);
+        frmNV.setManv(manv);
         frmNV.show();
         dispose();
     }//GEN-LAST:event_mitNHANVIENActionPerformed
 
     private void mitDOCGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDOCGIAActionPerformed
         frmDOCGIA frmDG = new frmDOCGIA();
+        frmDG.setRole(role);
+        frmDG.setManv(manv);
         frmDG.show();
         dispose();
     }//GEN-LAST:event_mitDOCGIAActionPerformed
 
     private void mitSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_mitSACHActionPerformed
 
     private void mitTACGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTACGIAActionPerformed
         frmTACGIA frmTG = new frmTACGIA();
+        frmTG.setRole(role);
+        frmTG.setManv(manv);
         frmTG.show();
         dispose();
     }//GEN-LAST:event_mitTACGIAActionPerformed
 
     private void mitNXBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNXBActionPerformed
         frmNXB frmN = new frmNXB();
+        frmN.setRole(role);
+        frmN.setManv(manv);
         frmN.show();
         dispose();
     }//GEN-LAST:event_mitNXBActionPerformed
@@ -752,24 +804,32 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private void mitPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUNHAPActionPerformed
 
     private void mitPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONActionPerformed
 
     private void mitPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONCTActionPerformed
 
     private void mitTHONGKEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTHONGKEActionPerformed
         frmTHONGKE frmTK = new frmTHONGKE();
+        frmTK.setRole(role);
+        frmTK.setManv(manv);
         frmTK.show();
         dispose();
     }//GEN-LAST:event_mitTHONGKEActionPerformed
@@ -797,46 +857,13 @@ public class frmDOCGIA extends javax.swing.JFrame {
     }//GEN-LAST:event_mitDOIMKActionPerformed
 
     private void btnDGXOAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGXOAActionPerformed
-        if (txtMADG.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
-            return;
-        }
-         if (kiemloiDG() == false) {
-            return;
-        }
-        boolean ckmals = false;
-        for (Docgia dg : list) {
-            if (dg.getMadg().equals(txtMADG.getText())) {
-                ckmals = true;
-                break;
-            }
-        }
-        if (!ckmals) {
-            JOptionPane.showMessageDialog(this, "Mã độc giả không tồn tại");
-            return;
-        }
         xoaDocgia();
         laydulieuDocgia("");
     }//GEN-LAST:event_btnDGXOAActionPerformed
 
     private void btnDGCAPNHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDGCAPNHATActionPerformed
-        if (txtMADG.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
-            return;
-        }
-        if (kiemloiDG() == false) {
-            return;
-        }
-        boolean ckmals = false;
-        for (Docgia dg : list) {
-            if (dg.getMadg().equals(txtMADG.getText())) {
-                ckmals = true;
-                break;
-            }
-        }
-        if (!ckmals) {
-            JOptionPane.showMessageDialog(this, "Mã độc giả không tồn tại");
-            return;
+        if(kiemloiDG() == false){
+        return;
         }
         List<Docgia> listdg = new ArrayList<>();
         String sql1 = " WHERE sdt like '" + txtDGSDT.getText() + "' and madg != '" + txtMADG.getText() + "'";
@@ -845,7 +872,7 @@ public class frmDOCGIA extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(frmNNHANVIEN.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (listdg.size() > 0) {
+        if (!listdg.isEmpty()) {
             JOptionPane.showMessageDialog(this, "SĐT bị trùng lặp");
             listdg.clear();
             return;
@@ -909,6 +936,8 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
         frmPHIEUPHAT frmPP;
         frmPP = new frmPHIEUPHAT();
+        frmPP.setRole(role);
+        frmPP.setManv(manv);
         frmPP.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUPHATActionPerformed
@@ -1014,6 +1043,7 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private javax.swing.JTextField txtDGMATKHAU;
     private javax.swing.JTextField txtDGSDT;
     private javax.swing.JTextField txtMADG;
+    private javax.swing.JTextField txtSEACH;
     private javax.swing.JTextField txtTENDG;
     // End of variables declaration//GEN-END:variables
 
@@ -1064,11 +1094,11 @@ public class frmDOCGIA extends javax.swing.JFrame {
     private void timkiemDocgia() {
         String sql = "";
         if (rdbMDG.isSelected()) {
-            sql = " WHERE madg like '%" + txtMADG.getText() + "%'";
+            sql = " WHERE madg like '%" + txtSEACH.getText() + "%'";
         } else if (rdbSDT.isSelected()) {
-            sql = " WHERE sdt like '%" + txtDGSDT.getText() + "%'";
+            sql = " WHERE sdt like '%" + txtSEACH.getText() + "%'";
         } else if (rdbTENDG.isSelected()) {
-            sql = " WHERE tendg like N'%" + txtTENDG.getText() + "%'";
+            sql = " WHERE tendg like N'%" + txtSEACH.getText() + "%'";
         } else {
         }
         laydulieuDocgia(sql);

@@ -27,6 +27,8 @@ public class frmNXB extends javax.swing.JFrame {
      */
     List<NhaXB> list = new ArrayList<>();
     private int currentindex;
+    private int role;
+    private String manv;
 
     public frmNXB() {
         initComponents();
@@ -39,6 +41,25 @@ public class frmNXB extends javax.swing.JFrame {
 
     }
 
+    // set vai trò quản lý
+    public void setRole(int role) {
+        this.role = role;
+        checkRole(role);
+    }
+// set mã nhân vên
+
+    public void setManv(String manv) {
+        this.manv = manv;
+    }
+// kiểm tra vai trò : 1 - Quản lý , 2 - Nhân viên
+
+    public void checkRole(int role) {
+        if (role == 1) {
+            mitNHANVIEN.hide();
+            mitTHONGKE.hide();
+        }
+    }
+
     private void laydulieuNXB(String sql) {
         try {
             tblNXB.removeAll();
@@ -47,7 +68,7 @@ public class frmNXB extends javax.swing.JFrame {
             fillToTableNXB();
             laydulieuNXB1();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Tải dữ liệu lên thất bại");
+            JOptionPane.showMessageDialog(this, "Dữ liệu trống");
         }
     }
 
@@ -62,7 +83,7 @@ public class frmNXB extends javax.swing.JFrame {
             txtNXBDIACHI.setText(nxb.getDiachi());
             txtNXBEMAIL.setText(nxb.getEmail());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Dữ liệu trống");
+            JOptionPane.showMessageDialog(this, "Không tìm thấy NXB");
         }
     }
 
@@ -113,6 +134,7 @@ public class frmNXB extends javax.swing.JFrame {
         btnNXBSEACH = new javax.swing.JButton();
         rdbMANXB = new javax.swing.JRadioButton();
         rdbTENNXB = new javax.swing.JRadioButton();
+        txtSEACH = new javax.swing.JTextField();
         lblBR = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -247,6 +269,8 @@ public class frmNXB extends javax.swing.JFrame {
         jLabel31.setForeground(new java.awt.Color(0, 0, 255));
         jLabel31.setText("Email");
 
+        txtMANXB.setEnabled(false);
+
         tblNXB.setBackground(new java.awt.Color(204, 255, 255));
         tblNXB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -328,6 +352,8 @@ public class frmNXB extends javax.swing.JFrame {
         rdbTENNXB.setForeground(new java.awt.Color(0, 0, 255));
         rdbTENNXB.setText("Tên NXB");
 
+        txtSEACH.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -339,18 +365,24 @@ public class frmNXB extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rdbTENNXB)
-                    .addComponent(rdbMANXB))
+                    .addComponent(rdbMANXB)
+                    .addComponent(rdbTENNXB))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtSEACH)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(txtSEACH, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbMANXB)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbTENNXB)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnNXBSEACH)
                 .addContainerGap())
         );
@@ -417,8 +449,8 @@ public class frmNXB extends javax.swing.JFrame {
                             .addComponent(btnNXBTHEMMOI)
                             .addComponent(btnNXBCAPNHAT)
                             .addComponent(btnNXBXOA)))
-                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -647,6 +679,8 @@ public class frmNXB extends javax.swing.JFrame {
 
     private void btnSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_btnSACHActionPerformed
@@ -654,48 +688,64 @@ public class frmNXB extends javax.swing.JFrame {
     private void btnPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUNHAPActionPerformed
 
     private void btnPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONActionPerformed
 
     private void btnPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONCTActionPerformed
 
     private void mitNHANVIENActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNHANVIENActionPerformed
         frmNNHANVIEN frmNV = new frmNNHANVIEN();
+        frmNV.setRole(role);
+        frmNV.setManv(manv);
         frmNV.show();
         dispose();
     }//GEN-LAST:event_mitNHANVIENActionPerformed
 
     private void mitDOCGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDOCGIAActionPerformed
         frmDOCGIA frmDG = new frmDOCGIA();
+        frmDG.setRole(role);
+        frmDG.setManv(manv);
         frmDG.show();
         dispose();
     }//GEN-LAST:event_mitDOCGIAActionPerformed
 
     private void mitSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_mitSACHActionPerformed
 
     private void mitTACGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTACGIAActionPerformed
         frmTACGIA frmTG = new frmTACGIA();
+        frmTG.setRole(role);
+        frmTG.setManv(manv);
         frmTG.show();
         dispose();
     }//GEN-LAST:event_mitTACGIAActionPerformed
 
     private void mitNXBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNXBActionPerformed
         frmNXB frmN = new frmNXB();
+        frmN.setRole(role);
+        frmN.setManv(manv);
         frmN.show();
         dispose();
     }//GEN-LAST:event_mitNXBActionPerformed
@@ -703,24 +753,32 @@ public class frmNXB extends javax.swing.JFrame {
     private void mitPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUNHAPActionPerformed
 
     private void mitPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONActionPerformed
 
     private void mitPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONCTActionPerformed
 
     private void mitTHONGKEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTHONGKEActionPerformed
         frmTHONGKE frmTK = new frmTHONGKE();
+        frmTK.setRole(role);
+        frmTK.setManv(manv);
         frmTK.show();
         dispose();
     }//GEN-LAST:event_mitTHONGKEActionPerformed
@@ -765,23 +823,9 @@ public class frmNXB extends javax.swing.JFrame {
     }//GEN-LAST:event_tblNXBMouseClicked
 
     private void btnNXBCAPNHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNXBCAPNHATActionPerformed
-        if (txtMANXB.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã NXB");
-            return;
-        } else if (kiemtraloiNXB() == false) {
+        if (kiemtraloiNXB() == false) {
             return;
         } else {
-            boolean ckmanxb = false;
-            for (NhaXB nxb : list) {
-                if (nxb.getManxb().equals(txtMANXB.getText())) {
-                    ckmanxb = true;
-                    break;
-                }
-            }
-            if (!ckmanxb) {
-                JOptionPane.showMessageDialog(this, "Mã NXB không tồn tại");
-                return;
-            }
             List<NhaXB> n = new ArrayList<>();
             try {
                 String sql = "where tennxb like N'" + txtTENNXB.getText().trim() + "' and manxb like'" + txtMANXB.getText() + "'";
@@ -789,7 +833,7 @@ public class frmNXB extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(frmSACH.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (n.size() > 1) {
+            if (!n.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên NXB đã tồn tại");
                 n.clear();
                 return;
@@ -800,7 +844,7 @@ public class frmNXB extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(frmSACH.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (n.size() > 0) {
+            if (!n.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Email NXB đã tồn tại");
                 n.clear();
                 return;
@@ -827,6 +871,7 @@ public class frmNXB extends javax.swing.JFrame {
             return;
         }
         xoaNXB();
+        currentindex = 0;
         laydulieuNXB("");
     }//GEN-LAST:event_btnNXBXOAActionPerformed
 
@@ -866,6 +911,8 @@ public class frmNXB extends javax.swing.JFrame {
     private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
         frmPHIEUPHAT frmPP;
         frmPP = new frmPHIEUPHAT();
+        frmPP.setRole(role);
+        frmPP.setManv(manv);
         frmPP.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUPHATActionPerformed
@@ -974,6 +1021,7 @@ public class frmNXB extends javax.swing.JFrame {
     private javax.swing.JTextField txtMANXB;
     private javax.swing.JTextField txtNXBDIACHI;
     private javax.swing.JTextField txtNXBEMAIL;
+    private javax.swing.JTextField txtSEACH;
     private javax.swing.JTextField txtTENNXB;
     // End of variables declaration//GEN-END:variables
 
@@ -1030,9 +1078,9 @@ public class frmNXB extends javax.swing.JFrame {
     private void timkiemNXB() {
         String sql = "";
         if (rdbMANXB.isSelected()) {
-            sql = " where manxb like'" + txtMANXB.getText().trim() + "'";
+            sql = " where manxb = '" + txtSEACH.getText() + "'";
         } else if (rdbTENNXB.isSelected()) {
-            sql = " where tennxb like N'" + txtTENNXB.getText().trim() + "'";
+            sql = " where tennxb like N'" + txtSEACH.getText() + "'";
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn thuộc tính tìm kiếm");
             return;

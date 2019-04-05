@@ -20,7 +20,13 @@ import model.DocgiaDao;
 import model.Nhanvien;
 import model.NhanvienDao;
 import model.Phieumuon;
+import model.PhieumuonCT;
+import model.PhieumuonCTDao;
 import model.PhieumuonDao;
+import model.Phieuphat;
+import model.PhieuphatDao;
+import model.Sach;
+import model.SachDao;
 
 /**
  *
@@ -33,6 +39,10 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
      */
     List<Phieumuon> list = new ArrayList<>();
     private int currentindex;
+    private int cktt1;
+    private int cktt2;
+    private int role;
+    private String manv;
 
     public frmPHIEUMUON() {
         initComponents();
@@ -43,6 +53,25 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         laydulieuPhieumuon("");
 
+    }
+
+    // set vai trò quản lý
+    public void setRole(int role) {
+        this.role = role;
+        checkRole(role);
+    }
+// set mã nhân vên
+
+    public void setManv(String manv) {
+        this.manv = manv;
+    }
+// kiểm tra vai trò : 1 - Quản lý , 2 - Nhân viên
+
+    public void checkRole(int role) {
+        if (role == 1) {
+            mitNHANVIEN.hide();
+            mitTHONGKE.hide();
+        }
     }
 
     private void laydulieuPhieumuon(String sql) {
@@ -86,11 +115,14 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             txtPMNGAYTRA.setText(pm.getNgaytra());
             if (pm.getTrangthai() == 0) {
                 rdbDT.setSelected(true);
+                cktt1 = 1;
             } else {
                 rdbCT.setSelected(true);
+                cktt1 = 2;
             }
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Dữ liệu trống");
+            JOptionPane.showMessageDialog(this, "Không tìm thấy phiếu mượn");
         }
     }
 
@@ -144,6 +176,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         rdbMPM = new javax.swing.JRadioButton();
         rdbMDG = new javax.swing.JRadioButton();
         rdbTT = new javax.swing.JRadioButton();
+        txtSEACH = new javax.swing.JTextField();
         rdbDT = new javax.swing.JRadioButton();
         rdbCT = new javax.swing.JRadioButton();
         lblBR = new javax.swing.JLabel();
@@ -288,6 +321,10 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         jLabel37.setForeground(new java.awt.Color(0, 0, 255));
         jLabel37.setText("Trạng thái");
 
+        txtMAPM.setBackground(new java.awt.Color(204, 255, 255));
+        txtMAPM.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtMAPM.setEnabled(false);
+
         tblPHIEUMUON.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -373,6 +410,8 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         rdbTT.setForeground(new java.awt.Color(0, 0, 255));
         rdbTT.setText("Trạng thái");
 
+        txtSEACH.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -382,25 +421,27 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
                 .addComponent(btnPMSEACH)
                 .addGap(38, 38, 38))
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rdbTT)
+                .addGap(19, 19, 19)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rdbMPM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rdbMDG)
-                    .addComponent(rdbMPM))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(txtSEACH)
+                    .addComponent(rdbTT))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
+                .addComponent(txtSEACH)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbMPM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbMDG)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(rdbTT)
-                .addGap(10, 10, 10)
-                .addComponent(btnPMSEACH)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnPMSEACH))
         );
 
         buttonGroup1.add(rdbDT);
@@ -448,7 +489,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
                                         .addComponent(rdbCT))))
                             .addGroup(PHIEUMUONLayout.createSequentialGroup()
                                 .addComponent(btnPMNHAPMOI)
-                                .addGap(18, 18, 18)
+                                .addGap(27, 27, 27)
                                 .addComponent(btnPMTHEMMOI)
                                 .addGap(34, 34, 34)
                                 .addComponent(btnPMCAPNHAT)
@@ -462,7 +503,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PHIEUMUONLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(PHIEUMUONLayout.createSequentialGroup()
                         .addGroup(PHIEUMUONLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel32)
@@ -488,7 +529,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
                             .addComponent(btnPMTHEMMOI)
                             .addComponent(btnPMCAPNHAT)
                             .addComponent(btnPMXOA)))
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
@@ -722,6 +763,8 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
 
     private void btnSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_btnSACHActionPerformed
@@ -729,48 +772,64 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     private void btnPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUNHAPActionPerformed
 
     private void btnPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONActionPerformed
 
     private void btnPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_btnPHIEUMUONCTActionPerformed
 
     private void mitNHANVIENActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNHANVIENActionPerformed
         frmNNHANVIEN frmNV = new frmNNHANVIEN();
+        frmNV.setRole(role);
+        frmNV.setManv(manv);
         frmNV.show();
         dispose();
     }//GEN-LAST:event_mitNHANVIENActionPerformed
 
     private void mitDOCGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDOCGIAActionPerformed
         frmDOCGIA frmDG = new frmDOCGIA();
+        frmDG.setRole(role);
+        frmDG.setManv(manv);
         frmDG.show();
         dispose();
     }//GEN-LAST:event_mitDOCGIAActionPerformed
 
     private void mitSACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitSACHActionPerformed
         frmSACH frmS = new frmSACH();
+        frmS.setRole(role);
+        frmS.setManv(manv);
         frmS.show();
         dispose();
     }//GEN-LAST:event_mitSACHActionPerformed
 
     private void mitTACGIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTACGIAActionPerformed
         frmTACGIA frmTG = new frmTACGIA();
+        frmTG.setRole(role);
+        frmTG.setManv(manv);
         frmTG.show();
         dispose();
     }//GEN-LAST:event_mitTACGIAActionPerformed
 
     private void mitNXBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNXBActionPerformed
         frmNXB frmN = new frmNXB();
+        frmN.setRole(role);
+        frmN.setManv(manv);
         frmN.show();
         dispose();
     }//GEN-LAST:event_mitNXBActionPerformed
@@ -778,24 +837,32 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     private void mitPHIEUNHAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUNHAPActionPerformed
         frmPHIEUNHAP frmPN;
         frmPN = new frmPHIEUNHAP();
+        frmPN.setRole(role);
+        frmPN.setManv(manv);
         frmPN.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUNHAPActionPerformed
 
     private void mitPHIEUMUONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONActionPerformed
         frmPHIEUMUON frmPM = new frmPHIEUMUON();
+        frmPM.setRole(role);
+        frmPM.setManv(manv);
         frmPM.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONActionPerformed
 
     private void mitPHIEUMUONCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUMUONCTActionPerformed
         frmPHIEUMUONCT frmPMCT = new frmPHIEUMUONCT();
+        frmPMCT.setRole(role);
+        frmPMCT.setManv(manv);
         frmPMCT.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUMUONCTActionPerformed
 
     private void mitTHONGKEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitTHONGKEActionPerformed
         frmTHONGKE frmTK = new frmTHONGKE();
+        frmTK.setRole(role);
+        frmTK.setManv(manv);
         frmTK.show();
         dispose();
     }//GEN-LAST:event_mitTHONGKEActionPerformed
@@ -804,52 +871,79 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         if (kiemloiPM() == false) {
             return;
         }
+        for (Phieumuon pm : list) {
+            if (pm.getMadg().equals(txtPMMADOCGIA.getText()) && pm.getTrangthai() != 0) {
+                List<Phieuphat> pp = new ArrayList<>();
+                try {
+                    pp = PhieuphatDao.layttPhieuphat(" Where mapm like '" + pm.getMaphieumuon() + "'");
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (!pp.isEmpty()) {
+                    Phieuphat p = pp.get(0);
+                    if (p.getTrangthai().equals("1")) {
+                        JOptionPane.showMessageDialog(this, "Phiếu mượn trước độc giả chưa trả sách");
+                        return;
+                    } else {
+                        break;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Phiếu mượn trước độc giả chưa trả sách");
+                    return;
+                }
+            } else {
+            }
+        }
+
         themPM();
         laydulieuPhieumuon("");
         laydulieuPM();
     }//GEN-LAST:event_btnPMTHEMMOIActionPerformed
 
     private void btnPMCAPNHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPMCAPNHATActionPerformed
-        if (txtMAPM.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu mượn");
-            return;
-        }
-        if (kiemloiPM() == false) {
-            return;
-        }
-        boolean ckmals = false;
-        for (Phieumuon pm : list) {
-            if (pm.getMaphieumuon().equals(txtMAPM.getText())) {
-                ckmals = true;
-                break;
+        cktt2 = rdbDT.isSelected() ? 1 : 2;
+        capnhatPhieumuon();
+        if (cktt1 == 1 && cktt1 != cktt2) {
+            try {
+                PhieumuonDao.capnhatsoluongSachMuon(txtMAPM.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (cktt1 == 2 && cktt1 != cktt2) {
+            try {
+                PhieumuonDao.capnhatsoluongSachTra(txtMAPM.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (!ckmals) {
-            JOptionPane.showMessageDialog(this, "Mã phiếu mượn không tồn tại");
-            return;
-        }
-        capnhatPhieumuon();
         laydulieuPhieumuon("");
         laydulieuPM();
     }//GEN-LAST:event_btnPMCAPNHATActionPerformed
 
     private void btnPMXOAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPMXOAActionPerformed
-        if (txtMAPM.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu mượn");
-            return;
-        }
-        boolean ckmals = false;
-        for (Phieumuon pm : list) {
-            if (pm.getMaphieumuon().equals(txtMAPM.getText())) {
-                ckmals = true;
-                break;
-            }
-        }
-        if (!ckmals) {
-            JOptionPane.showMessageDialog(this, "Mã phiếu mượn không tồn tại");
-            return;
+        String mapm = txtMAPM.getText();
+        List<PhieumuonCT> pmct = new ArrayList<>();
+        try {
+            pmct = PhieumuonCTDao.laydulieuPhieumuonCT(" Where maphieumuon like '" + mapm + "'");
+        } catch (SQLException ex) {
+            Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
         }
         xoaPhieumuon();
+        for (PhieumuonCT p : pmct) {
+            String sql = " WHERE masach like '" + p.getMasach() + "'";
+            List<Sach> sach = null;
+            try {
+                sach = SachDao.laydulieuSach(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPHIEUMUONCT.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Sach s = sach.get(0);
+            int sl = s.getSoluong() + 1;
+            Sach sa = new Sach(s.getMasach(), s.getTensach(), s.getHinhanh(), s.getMatacgia(), s.getLoai(), sl, s.getManxb(), s.getNamxb(), s.getFiles());
+            SachDao.capnhatSach(sa);
+            PhieumuonCTDao.xoaPhieumuonCT(p.getMaphieumuonct());
+        }
+        currentindex = 0;
         laydulieuPhieumuon("");
     }//GEN-LAST:event_btnPMXOAActionPerformed
 
@@ -890,8 +984,10 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
             txtPMNGAYTRA.setText(pm.getNgaytra());
             if (pm.getTrangthai() == 0) {
                 rdbDT.setSelected(true);
+                cktt1 = 1;
             } else {
                 rdbCT.setSelected(true);
+                cktt1 = 2;
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Dữ liệu trống");
@@ -911,6 +1007,8 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     private void mitPHIEUPHATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitPHIEUPHATActionPerformed
         frmPHIEUPHAT frmPP;
         frmPP = new frmPHIEUPHAT();
+        frmPP.setRole(role);
+        frmPP.setManv(manv);
         frmPP.show();
         dispose();
     }//GEN-LAST:event_mitPHIEUPHATActionPerformed
@@ -1019,6 +1117,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     private javax.swing.JTextField txtPMMANV;
     private javax.swing.JTextField txtPMNGAYMUON;
     private javax.swing.JTextField txtPMNGAYTRA;
+    private javax.swing.JTextField txtSEACH;
     // End of variables declaration//GEN-END:variables
 
     private void themPM() {
@@ -1050,15 +1149,9 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         }
 
         String madg = txtPMMADOCGIA.getText();
-        String manv = txtPMMANV.getText();
         String ngaym = txtPMNGAYMUON.getText();
         String ngayt = txtPMNGAYTRA.getText();
-        int tt;
-        if (rdbDT.isSelected()) {
-            tt = 0;
-        } else {
-            tt = 1;
-        }
+        int tt = 1;
         Phieumuon pm = new Phieumuon(mapm, madg, manv, ngaym, ngayt, tt);
         PhieumuonDao.themPhieumuon(pm);
         JOptionPane.showMessageDialog(this, "Thêm thành công");
@@ -1066,8 +1159,10 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
 
     private void xoaPhieumuon() {
         String mapm = txtMAPM.getText();
+        PhieuphatDao.xoaPhieuphat(mapm);
         PhieumuonDao.xoaPhieumuon(mapm);
         JOptionPane.showMessageDialog(this, "Xóa phiếu mượn thành công");
+
     }
 
     private void capnhatPhieumuon() {
@@ -1076,12 +1171,7 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
         String manv = txtPMMANV.getText();
         String ngaym = txtPMNGAYMUON.getText();
         String ngayt = txtPMNGAYTRA.getText();
-        int tt;
-        if (rdbDT.isSelected()) {
-            tt = 0;
-        } else {
-            tt = 1;
-        }
+        int tt = rdbDT.isSelected() ? 0 : 1;
         Phieumuon pm = new Phieumuon(mapm, madg, manv, ngaym, ngayt, tt);
         PhieumuonDao.capnhatPhieumuon(pm);
         JOptionPane.showMessageDialog(this, "Cập nhật thành công");
@@ -1089,16 +1179,11 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     }
 
     private boolean kiemloiPM() {
-        String mapm = txtMAPM.getText();
         String madg = txtPMMADOCGIA.getText();
-        String manv = txtPMMANV.getText();
         String ngaym = txtPMNGAYMUON.getText();
         String ngayt = txtPMNGAYTRA.getText();
         if (madg.equals("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
-            return false;
-        } else if (manv.equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã nhân viên");
             return false;
         } else if (ngaym.equals("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày mượn");
@@ -1119,39 +1204,17 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
 //                JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày tháng năm đúng định dạng ngày/tháng/năm");
 //                return false;
 //            }
-            List<Docgia> listdg = new ArrayList<>();
+            Docgia listdg = null;
             try {
-                listdg = DocgiaDao.laydulieuDocgia("");
+                List<Docgia> dg = DocgiaDao.laydulieuDocgia(" Where madg = '" + txtPMMADOCGIA.getText() + "'");
+                if (!dg.isEmpty()) {
+                    listdg = dg.get(0);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
             }
-            boolean ckmadg = false;
-            for (Docgia dg : listdg) {
-                if (dg.getMadg().equals(madg)) {
-                    ckmadg = true;
-                    break;
-                }
-            }
-            if (!ckmadg) {
+            if (listdg == null) {
                 JOptionPane.showMessageDialog(this, "Mã độc giả không tồn tại");
-                return false;
-            }
-
-            List<Nhanvien> listnv = new ArrayList<>();
-            try {
-                listnv = NhanvienDao.laydulieuNhanvien("");
-            } catch (SQLException ex) {
-                Logger.getLogger(frmPHIEUMUON.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            boolean ckmanv = false;
-            for (Nhanvien nv : listnv) {
-                if (nv.getManv().equals(manv)) {
-                    ckmanv = true;
-                    break;
-                }
-            }
-            if (!ckmanv) {
-                JOptionPane.showMessageDialog(this, "Mã nhân viên không tồn tại");
                 return false;
             }
         }
@@ -1161,38 +1224,13 @@ public class frmPHIEUMUON extends javax.swing.JFrame {
     private void timkiemPhieumuon() {
         String sql = "";
         if (rdbMPM.isSelected()) {
-            if (txtMAPM.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã phiếu mượn");
-                return;
-            } else {
-                sql = " WHERE maphieumuon like '" + txtMAPM.getText() + "'";
-            }
+            sql = " WHERE maphieumuon = '" + txtSEACH.getText() + "'";
         } else if (rdbMDG.isSelected()) {
-            if (txtPMMADOCGIA.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
-                return;
-            } else {
-                sql = " WHERE madg like '" + txtPMMADOCGIA.getText() + "'";
-            }
+            sql = " WHERE madg = '" + txtSEACH.getText() + "'";
         } else if (rdbTT.isSelected()) {
-            if (txtPMMADOCGIA.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã độc giả");
-                return;
-            } else {
-                String tt = "";
-                if (rdbDT.isSelected()) {
-                    tt = "0";
-                } else if (rdbCT.isSelected()) {
-                    tt = "1";
-                } else {
-                    JOptionPane.showMessageDialog(this, "Vui lòng chọn trạng thái");
-                    return;
-                }
-                sql = " WHERE trangthai like '" + tt + "'";
-            }
+            int tt = rdbDT.isSelected() ? 0 : 1;
+            sql = " WHERE trangthai = " + tt;
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn thuộc tính tìm kiếm");
-            return;
         }
         laydulieuPhieumuon(sql);
         laydulieuPM();

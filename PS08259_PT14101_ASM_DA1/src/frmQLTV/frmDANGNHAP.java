@@ -25,8 +25,6 @@ public class frmDANGNHAP extends javax.swing.JFrame {
     /**
      * Creates new form frmDANGNHAP
      */
-    List<Nhanvien> nvien = new ArrayList<>();
-
     public frmDANGNHAP() throws ClassNotFoundException, SQLException {
         initComponents();
         lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/btdn1.jpg")));
@@ -35,15 +33,6 @@ public class frmDANGNHAP extends javax.swing.JFrame {
         lblBR.setSize(391, 230);
         this.setSize(391, 230);
         setLocationRelativeTo(null);
-        laydulieuNhanvien();
-    }
-
-    private void laydulieuNhanvien() throws ClassNotFoundException, SQLException {
-        try {
-            nvien = NhanvienDao.laydulieuNhanvien("");
-        } catch (SQLException e) {
-            System.out.println("Dữ liệu trống");
-        }
     }
 
     /**
@@ -226,49 +215,53 @@ public class frmDANGNHAP extends javax.swing.JFrame {
         } else {
             txtMATKHAU.setBackground(Color.white);
         }
-        for (Nhanvien nv : nvien) {
-            if (nv.getEmail().trim().equals(txtTAIKHOAN.getText().trim()) || nv.getSdt().trim().equals(txtTAIKHOAN.getText().trim())) {
-                if (nv.getMk().trim().equals(txtMATKHAU.getText().trim())) {
-        jPanel1.show(false);
-        this.setSize(704, 362);
-        lblBR.setSize(704, 362);
-        lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/brtv9.jpg")));
-        jPanel2.show(true);
-        setLocationRelativeTo(null);
-        jpnBR.show(true);
-        new Thread() {
-            @Override
-            public void run() {
-                int i = 0;
-                for (i = 0; i < 101; i++) {
-                    try {
-                        lblLoad.setText("Loading " + i + "%");
-                        Thread.sleep(20);
-                        if (i == 100) {
-                            frmSACH frmMN;
-                            frmMN = new frmSACH();
-                                        frmMN.setRole(Integer.parseInt(nv.getVaitro()));
-                                        frmMN.setManv(nv.getManv());
-                            frmMN.show();
-                            dis();
-                        }
-                    } catch (InterruptedException ex) {
-                        break;
-                    }
-                }
+        Nhanvien nvien = null;
+        try {
+            List<Nhanvien> nviens = NhanvienDao.laydulieuNhanvien(" Where sdt = '" + txtTAIKHOAN.getText() + "' or email = '" + txtTAIKHOAN.getText() + "'");
+            if (!nviens.isEmpty()) {
+                nvien = nviens.get(0);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmDANGNHAP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (nvien == null) {
+            JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu vui lòng kiểm tra lại");
+        } else {
+            if (nvien.getMk().equals(txtMATKHAU.getText())) {
+                jPanel1.show(false);
+                this.setSize(704, 362);
+                lblBR.setSize(704, 362);
+                lblBR.setIcon(new ImageIcon(getClass().getResource("/BR/brtv9.jpg")));
+                jPanel2.show(true);
+                setLocationRelativeTo(null);
+                jpnBR.show(true);
+                String vt = nvien.getVaitro();
+                String ma = nvien.getManv();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        int i = 0;
+                        for (i = 0; i <= 100; i++) {
+                            try {
+                                lblLoad.setText("Loading " + i + "%");
+                                Thread.sleep(20);
+                                if (i == 100) {
+                                    frmSACH frmMN;
+                                    frmMN = new frmSACH();
+                                    frmMN.setRole(Integer.parseInt(vt));
+                                    frmMN.setManv(ma);
+                                    frmMN.show();
+                                    dis();
+                                }
+                            } catch (InterruptedException ex) {
+                                break;
+                            }
+                        }
+                    }
 
-        }.start();
-                    return;
-                } else {
-                    JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu vui lòng kiểm tra lại");
-                    return;
-                    
-                }
-            } else if (nvien.indexOf(nv) == nvien.size() - 1 && !nv.getEmail().equals(txtTAIKHOAN.getText()) || nvien.indexOf(nv) == nvien.size() - 1 && !nv.getSdt().equals(txtTAIKHOAN.getText())) {
-                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu vui lòng kiểm tra lại");
-                return;
+                }.start();
             } else {
+                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu vui lòng kiểm tra lại");
             }
         }
 

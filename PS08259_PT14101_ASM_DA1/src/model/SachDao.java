@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jdbchelp.JdbcHelper;
 
 /**
@@ -20,8 +22,8 @@ public class SachDao {
     public static List<Sach> laydulieuSach(String ma) throws SQLException {
         List<Sach> list = new ArrayList<>();
         String sql = "SELECT * FROM SACH";
-        if(ma.length()>0){
-        sql+= " " + ma;
+        if (ma.length() > 0) {
+            sql += " " + ma;
         }
         ResultSet rs = JdbcHelper.executeQuery(sql);
         while (rs.next()) {
@@ -57,5 +59,18 @@ public class SachDao {
     public static void xoaSach(String masach) {
         String sql = "DELETE FROM SACH WHERE masach = ?";
         JdbcHelper.executeUpdate(sql, masach);
+    }
+
+    public static boolean kiemtrasach(String masach) {
+        try {
+            List<Sach> s = SachDao.laydulieuSach(" Where masach = '" + masach + "'");
+            if (s.isEmpty()) {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SachDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return true;
     }
 }

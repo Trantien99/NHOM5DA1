@@ -22,7 +22,7 @@ public class PhieuphatDao {
         ResultSet rs = JdbcHelper.executeQuery(sql);
         while (rs.next()) {
             List<Phieuphat> listpp = new ArrayList<>();
-            listpp = PhieuphatDao.layttPhieuphat();
+            listpp = PhieuphatDao.layttPhieuphat("");
             String mapp = null;
             int a;
             AD:
@@ -69,9 +69,12 @@ public class PhieuphatDao {
 
     }
 
-    public static List<Phieuphat> layttPhieuphat() throws SQLException {
+    public static List<Phieuphat> layttPhieuphat(String ma) throws SQLException {
         List<Phieuphat> listpp = new ArrayList<>();
         String sql = "SELECT* FROM PHIEUPHAT";
+        if(ma.length()>0){
+        sql+= " " + ma;
+        }
         ResultSet rs = JdbcHelper.executeQuery(sql);
         while (rs.next()) {
             String mapp = rs.getString(1);
@@ -114,5 +117,12 @@ public class PhieuphatDao {
         JdbcHelper.executeUpdate(sql);
 
     }
+    
+    public static void xoaPhieuphat(String mapm) {
+        String sql = "DELETE PHIEUPHAT WHERE mapm ='"+mapm+"'";
+        JdbcHelper.executeUpdate(sql);
+
+    }
+    
 
 }

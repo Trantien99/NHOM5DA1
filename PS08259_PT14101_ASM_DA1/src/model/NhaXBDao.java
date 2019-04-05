@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jdbchelp.JdbcHelper;
 
 /**
@@ -20,8 +22,8 @@ public class NhaXBDao {
     public static List<NhaXB> laydulieuNhaXB(String ma) throws SQLException {
         List<NhaXB> list = new ArrayList<>();
         String sql = "SELECT * FROM NXB";
-        if(ma.length()>0){
-        sql+= " " + ma;
+        if (ma.length() > 0) {
+            sql += " " + ma;
         }
         ResultSet rs = JdbcHelper.executeQuery(sql);
         while (rs.next()) {
@@ -50,5 +52,15 @@ public class NhaXBDao {
     public static void xoaNhaXB(String manxb) {
         String sql = "DELETE FROM NXB WHERE manxb = ?";
         JdbcHelper.executeUpdate(sql, manxb);
+    }
+
+    public static boolean kiemtraNXB(String manxb) {
+        List<NhaXB> n = new ArrayList<>();
+        try {
+            n = NhaXBDao.laydulieuNhaXB(" Where manxb = '" + manxb + "'");
+        } catch (SQLException ex) {
+            Logger.getLogger(NhaXBDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return !n.isEmpty();
     }
 }
